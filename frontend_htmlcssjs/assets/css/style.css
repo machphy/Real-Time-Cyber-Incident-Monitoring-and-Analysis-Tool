@@ -1,0 +1,58 @@
+/* Main Stylesheet - styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+.header nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.header nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+.header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.section {
+    padding: 2rem;
+}
+
+#dataForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#resultsDisplay {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-top: 1rem;
+}
