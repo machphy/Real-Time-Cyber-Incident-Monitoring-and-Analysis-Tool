@@ -1,12 +1,41 @@
-YOUTUBE_API_KEY = 'AIzaSyD8g7vvAJQ0KCgVM4tjzxDWSXMVVRPT5Ec'
-FACEBOOK_ACCESS_TOKEN = 'EAAieGlvY8KIBOZCCH9o3NCnRL8eTjrjDQ9ZBjADqa67FpzXeqAc1aZCtLRiLAKSlDpZC93KJKW7eRgdguwMyuU7QREOV6WHxeeVUM2ZB3nYe1qFMImHoYxjZAFZCYq0QvGCmcmLnbgnJN3uuktV41q8dEEFuASC5s2cL6vvVYxzfJAlU0hceqimWijgS4cCKfjHItZB8Cx4vNe3t5luq9MtwGhfcaZBrACFLmyTgZCnd6JX7lZBJ3q2AVpjdwZDZD'
-TWITTER_API_KEY = 'F2SIsny1Wyjae9iXI6MDOLHR1'
-TWITTER_API_SECRET_KEY = 'DK1cPFGWPLfLhmgzOFhVW614gbFX8XfKBeoTdEPubdQHCP3vU7'
-TWITTER_ACCESS_TOKEN = '1479660185589141504-GxVLCL79TZQloRYK4WQ3cIi8AYSAYT'
-TWITTER_ACCESS_TOKEN_SECRET = 'GI2WFAuKMqVCCnlY2pjrsVBHt4Cz7f8GG8fBfUNnoGVJS'
-INSTAGRAM_ACCESS_TOKEN = 'IGQWRQWVVjSFg1bnRaM0trbmotUGNQZAFZAGNGlhUXFfVnpaTng0c2cyeTZACRFF1VnVmSjNiQlBWODBFYXJBVmVjRmN5ODd3ekZAPdWxxeFpnV3lXWDJjV19PdHBxRkV5RVhBNTJPQlhtR1o3SFljS2owVjNuSmFvajQZD'
+from flask import Flask, request, jsonify
+import joblib
+import os
 
+app = Flask(__name__)
 
+# Define the base directory and model path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, '../models/classifier.pkl')
 
+# Print the model path for debugging
+print(f"Loading model from: {MODEL_PATH}")
 
-# replace with updated API
+# Load the model using joblib
+try:
+    model = joblib.load(MODEL_PATH)
+except Exception as e:
+    raise RuntimeError(f"Failed to load model: {e}")
+
+@app.route('/classify', methods=['POST'])
+def classify_incident():
+    try:
+        data = request.get_json(force=True)
+        incident_features = data.get('incident_features', [])
+
+        if not incident_features:
+            return jsonify({"error": "No incident features provided"}), 400
+
+        prediction = model.predict([incident_features])[0]
+
+        return jsonify({"classification": prediction})
+
+    except ValueError as ve:
+        return jsonify({"error": f"Value error: {str(ve)}"}), 400
+    except TypeError as te:
+        return jsonify({"error": f"Type error: {str(te)}"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
