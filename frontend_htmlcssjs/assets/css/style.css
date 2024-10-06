@@ -1,58 +1,156 @@
-/* Main Stylesheet - styles.css */
-
+/* Custom Styles for Incident Dashboard */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
+    font-family: 'Arial', sans-serif; /* Use a clean sans-serif font */
+    background-color: #f8f9fa; /* Light background for body */
 }
 
-.header {
-    background: #333;
-    color: #fff;
-    padding: 1rem 2rem;
-    text-align: center;
+.navbar {
+    border-bottom: 2px solid #e2e8f0; /* Subtle border under the navbar */
 }
 
-.header nav ul {
-    list-style: none;
-    padding: 0;
+h5 {
+    font-weight: bold;
 }
 
-.header nav ul li {
-    display: inline;
-    margin: 0 10px;
+.incident-item {
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    background-color: white; /* White background for incident items */
+    border-radius: 0.5rem; /* Rounded corners for incident items */
+    padding: 10px; /* Padding inside incident items */
+    margin: 10px 0; /* Margin for spacing between incident items */
 }
 
-.header nav ul li a {
-    color: #fff;
-    text-decoration: none;
+.incident-item:hover {
+    transform: scale(1.02); /* Slightly scale up on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
 }
 
-.section {
-    padding: 2rem;
+/* Additional styling for the filter section */
+.filter-section {
+    padding: 15px;
+    border-radius: 0.5rem;
+    background-color: #f9fafb; /* Light gray background for filters */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for the filter section */
+    height: auto; /* Set height to auto to make it responsive */
 }
 
-#dataForm {
+/* Equal height for both filter and incident boxes */
+.filter-section,
+.incident-container {
+    flex: 1; /* Make both containers take equal space */
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: column; /* Ensure items stack vertically */
 }
 
-button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+/* Label and input styles */
+.filter-section label {
+    margin-bottom: 0.5rem; /* Spacing below labels */
 }
 
-button:hover {
-    background-color: #0056b3;
+/* Button styles */
+.btn-custom {
+    background-color: #3b82f6; /* Blue background */
+    color: white;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
-#resultsDisplay {
-    border: 1px solid #ddd;
-    padding: 1rem;
-    margin-top: 1rem;
+.btn-custom:hover {
+    background-color: #2563eb; /* Darker blue on hover */
+}
+
+/* Chart container styling */
+#incidentChart {
+    max-width: 100%;
+    border-radius: 0.5rem; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for charts */
+    margin-top: 20px; /* Margin for spacing */
+}
+
+/* 3D Visualization placeholder */
+#visualizationPlaceholder {
+    background-color: #e5e7eb; /* Light gray */
+    border-radius: 0.5rem; /* Rounded corners */
+    padding: 20px; /* Padding for aesthetics */
+    display: flex; /* Flexbox for centering content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Notification styling */
+.notification {
+    padding: 10px 15px; /* Padding for notifications */
+    border-radius: 0.5rem; /* Rounded corners for notifications */
+    margin-top: 10px; /* Margin for spacing */
+    display: flex; /* Flexbox for better alignment */
+    align-items: center; /* Center vertically */
+}
+
+/* Success notification */
+.notification.success {
+    background-color: #d1fae5; /* Light green background */
+    color: #065f46; /* Dark green text */
+}
+
+/* Error notification */
+.notification.error {
+    background-color: #fee2e2; /* Light red background */
+    color: #b91c1c; /* Dark red text */
+}
+
+/* General responsive design adjustments */
+@media (max-width: 768px) {
+    .incident-item {
+        padding: 8px; /* Adjust padding for smaller screens */
+    }
+
+    .filter-section {
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+
+    .notification {
+        flex-direction: column; /* Stack notifications for smaller screens */
+    }
+}
+
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.incident-container, .activity-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.incident-item, .activity-item {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.incident-item h5, .activity-item p {
+    margin: 0;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table th {
+    background-color: #e9ecef;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #e2e6ea;
 }
