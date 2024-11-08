@@ -16,9 +16,6 @@ This project consists of a full-stack application with a backend that handles da
 - **API Access**: Offers a REST API for accessing incident data and reports.
 - **Configurable and Scalable**: Supports configurations for deployment in different environments.
 
----
-
-## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Features](#features)
