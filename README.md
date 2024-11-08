@@ -16,21 +16,8 @@ This project consists of a full-stack application with a backend that handles da
 - **API Access**: Offers a REST API for accessing incident data and reports.
 - **Configurable and Scalable**: Supports configurations for deployment in different environments.
 
-
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [File Structure](#file-structure)
-- [Technologies Used](#technologies-used)
-- [System Architecture](#system-architecture)
-- [Setup Instructions](#setup-instructions)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Deployment](#deployment)
-- [License](#license)
-
 ---
 
-## File Structure
 
 ```plaintext
 cyber_incident_monitoring/
