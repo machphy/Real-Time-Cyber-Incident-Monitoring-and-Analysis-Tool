@@ -1,33 +1,52 @@
-from ml_model.data_preprocessing import load_data, clean_data, feature_engineering, split_data, save_data
+import pandas as pd
+import os
+from sklearn.model_selection import train_test_split
 
-# my data path 
-raw_data_path = "ml_model/data/raw/Cyberattack Annotated Dataset 1_updated.xlsx"
-processed_data_path = "ml_model/data/processed/processed_data.csv"
-train_data_path = "ml_model/data/processed/train.csv"
-test_data_path = "ml_model/data/processed/test.csv"
+# Paths
+RAW_DATA_PATH = os.path.join(os.getcwd(), "data", "raw", "data.csv")
+PROCESSED_DATA_DIR = os.path.join(os.getcwd(), "data", "processed")
 
-# Load raw data
-raw_data = load_data(raw_data_path)
+def load_data(filepath):
+    """Load raw data from CSV."""
+    return pd.read_csv(filepath)
 
-# Clean data
-cleaned_data = clean_data(raw_data)
+def clean_data(df):
+    """Perform basic cleaning like handling missing values."""
+    df = df.dropna()  # Remove missing values
+    df = df.drop_duplicates()  # Remove duplicate rows
+    return df
 
-# Perform feature engineering
-engineered_data = feature_engineering(cleaned_data)
+def feature_engineering(df):
+    """Perform feature engineering."""
+    # Example: Create a new column
+    df['new_feature'] = df['column_name'].apply(lambda x: x * 2)  # Placeholder logic
+    return df
 
-# Save the processed data
-save_data(engineered_data, processed_data_path)
+def split_data(df):
+    """Split data into training and testing sets."""
+    X = df.drop('target_column', axis=1)
+    y = df['target_column']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    return X_train, X_test, y_train, y_test
 
-# Split data into training and testing sets
-train_X, test_X, train_y, test_y = split_data(engineered_data, label_column="label")
+def save_data(X_train, X_test, y_train, y_test):
+    """Save processed data."""
+    if not os.path.exists(PROCESSED_DATA_DIR):
+        os.makedirs(PROCESSED_DATA_DIR)
+    X_train.to_csv(os.path.join(PROCESSED_DATA_DIR, "X_train.csv"), index=False)
+    X_test.to_csv(os.path.join(PROCESSED_DATA_DIR, "X_test.csv"), index=False)
+    y_train.to_csv(os.path.join(PROCESSED_DATA_DIR, "y_train.csv"), index=False)
+    y_test.to_csv(os.path.join(PROCESSED_DATA_DIR, "y_test.csv"), index=False)
 
-# Save training and testing data in file 
-train_data = train_X.copy()
-train_data["label"] = train_y
-save_data(train_data, train_data_path)
-
-test_data = test_X.copy()
-test_data["label"] = test_y
-save_data(test_data, test_data_path)
-
-print("Data preparation is complete.")
+if __name__ == "__main__":
+    # Load raw data
+    data = load_data(RAW_DATA_PATH)
+    # Clean data
+    data = clean_data(data)
+    # Feature engineering
+    data = feature_engineering(data)
+    # Split data
+    X_train, X_test, y_train, y_test = split_data(data)
+    # Save processed data
+    save_data(X_train, X_test, y_train, y_test)
+    print("Data preprocessing complete. Processed files saved.")
