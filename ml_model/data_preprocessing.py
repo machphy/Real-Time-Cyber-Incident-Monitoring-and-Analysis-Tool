@@ -3,12 +3,14 @@ import os
 from sklearn.model_selection import train_test_split
 
 # Paths
-RAW_DATA_PATH = os.path.join(os.getcwd(), "data", "raw", "data.csv")
-PROCESSED_DATA_DIR = os.path.join(os.getcwd(), "data", "processed")
+RAW_DATA_PATH = os.path.join(os.getcwd(), "ml_model", "data", "raw", "data.xlsx")
+PROCESSED_DATA_DIR = os.path.join(os.getcwd(), "ml_model", "data", "processed")
 
-def load_data(filepath):
-    """Load raw data from CSV."""
-    return pd.read_csv(filepath)
+def load_data(filepath=RAW_DATA_PATH):
+    """Load raw data from Excel."""
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"File not found: {filepath}")
+    return pd.read_excel(filepath)  # Updated to read an Excel file
 
 def clean_data(df):
     """Perform basic cleaning like handling missing values."""
@@ -17,8 +19,9 @@ def clean_data(df):
     return df
 
 def feature_engineering(df):
-  
+    """Add features or transform existing ones."""
     # Example: Create a new column
+    # Replace 'column_name' and logic as needed
     df['new_feature'] = df['column_name'].apply(lambda x: x * 2)  # Placeholder logic
     return df
 
@@ -41,12 +44,17 @@ def save_data(X_train, X_test, y_train, y_test):
 if __name__ == "__main__":
     # Load raw data
     data = load_data(RAW_DATA_PATH)
+    
     # Clean data
     data = clean_data(data)
+    
     # Feature engineering
     data = feature_engineering(data)
- 
+    
+    # Split data
     X_train, X_test, y_train, y_test = split_data(data)
+    
     # Save processed data
     save_data(X_train, X_test, y_train, y_test)
+    
     print("Data preprocessing complete. Processed files saved.")
