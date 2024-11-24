@@ -7,3 +7,12 @@ TWITTER_ACCESS_TOKEN_SECRET = 'GI2WFAuKMqVCCnlY2pjrsVBHt4Cz7f8GG8fBfUNnoGVJS'
 INSTAGRAM_ACCESS_TOKEN = 'IGQWRQWVVjSFg1bnRaM0trbmotUGNQZAFZAGNGlhUXFfVnpaTng0c2cyeTZACRFF1VnVmSjNiQlBWODBFYXJBVmVjRmN5ODd3ekZAPdWxxeFpnV3lXWDJjV19PdHBxRkV5RVhBNTJPQlhtR1o3SFljS2owVjNuSmFvajQZD'
 
 
+
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+tensorflow (if applicable)
+
+
