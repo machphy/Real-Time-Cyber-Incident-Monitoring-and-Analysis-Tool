@@ -17,7 +17,7 @@ def clean_data(df):
     return df
 
 def feature_engineering(df):
-    """Perform feature engineering."""
+  
     # Example: Create a new column
     df['new_feature'] = df['column_name'].apply(lambda x: x * 2)  # Placeholder logic
     return df
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     data = clean_data(data)
     # Feature engineering
     data = feature_engineering(data)
-    # Split data
+ 
     X_train, X_test, y_train, y_test = split_data(data)
     # Save processed data
     save_data(X_train, X_test, y_train, y_test)
