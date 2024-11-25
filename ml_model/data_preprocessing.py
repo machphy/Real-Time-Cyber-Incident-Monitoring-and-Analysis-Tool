@@ -41,7 +41,7 @@ def save_data(X_train, X_test, y_train, y_test):
     y_train.to_csv(os.path.join(PROCESSED_DATA_DIR, "y_train.csv"), index=False)
     y_test.to_csv(os.path.join(PROCESSED_DATA_DIR, "y_test.csv"), index=False)
 
-if __name__ == "__main__":
+if __name__ == "__main__"
     # Load raw data
     data = load_data(RAW_DATA_PATH)
     
