@@ -1,0 +1,2 @@
+secret_key: "prod_secret"
+database_uri: "postgresql://user:pass@prod-db-host/dbname"

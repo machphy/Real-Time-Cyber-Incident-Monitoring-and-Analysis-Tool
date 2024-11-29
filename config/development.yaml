@@ -1,0 +1,2 @@
+secret_key: "dev_secret"
+database_uri: "sqlite:///dev.db"

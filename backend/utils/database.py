@@ -1,8 +1,7 @@
-from flask_sqlalchemy import SQLAlchemy
+from pymongo import MongoClient
 
-db = SQLAlchemy()
+client = MongoClient("mongodb://localhost:27017/")
+db = client['cyber_incident_monitoring']
 
-def initialize_db(app):
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
+def insert_incident(data):
+    db.incidents.insert_one(data)
