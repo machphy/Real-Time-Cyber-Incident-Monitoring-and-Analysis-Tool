@@ -17,3 +17,4 @@ def predict():
 if __name__ == '__main__':
     app.run(debug=True)
       #flask web page link to UI sectionds according to there need
+    #   ok
