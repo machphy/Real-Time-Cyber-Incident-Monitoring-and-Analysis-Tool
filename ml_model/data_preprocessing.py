@@ -13,5 +13,3 @@ if __name__ == "__main__":
     data = load_data(RAW_DATA_PATH)
     print("Data loaded successfully ok")
     print(data.head())  # Display first 5 rows of data
-#  test now 
-dksjbfisd
