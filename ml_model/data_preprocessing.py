@@ -5,11 +5,13 @@ import os
 RAW_DATA_PATH = os.path.join(os.getcwd(), "data", "raw", "data.xlsx")
 
 def load_data(filepath):
-    """Load raw data from Excel in file."""
+    """Load raw data from Excel ."""
     return pd.read_excel(filepath)
 
 if __name__ == "__main__":
     # Load the data
     data = load_data(RAW_DATA_PATH)
-    print("Data loaded successfully")
+    print("Data loaded successfully ok")
     print(data.head())  # Display first 5 rows of data
+#  test now 
+dksjbfisd
