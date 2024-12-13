@@ -44,6 +44,7 @@ def split_data(df, target_column):
     return X_train, X_test, y_train, y_test
 
 if __name__ == "__main__":
+
     file_path = 'ml_model/data/raw/cybersecurity_attacks.xlsx'
     
     data = load_data(file_path)
@@ -57,3 +58,8 @@ if __name__ == "__main__":
             print("Data preprocessing complete!")  
         else:
             print("Error during data preprocessing.")
+
+    data = load_data('ml_model/data/raw/cybersecurity_attacks.xlsx')
+
+    print("Data loaded successfully ok")
+    print(data.head())  # Display first 5 rows of data
