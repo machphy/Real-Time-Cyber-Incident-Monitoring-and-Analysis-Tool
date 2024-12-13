@@ -2,9 +2,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 def load_data(file_path):
-    """ Load data from a given file path """
     try:
-        data = pd.read_excel(file_path)  # Assuming your data is in Excel format
+        data = pd.read_excel(file_path)  
         print(f"Data loaded successfully from {file_path}")
         return data
     except Exception as e:
@@ -12,46 +11,49 @@ def load_data(file_path):
         return None
 
 def clean_data(df):
-    """ Clean the dataset by handling missing values and duplicates """
-    # Removing duplicate rows
     df.drop_duplicates(inplace=True)
-    
-    # Filling missing values (assuming numeric columns are filled with the mean)
-    df.fillna(df.mean(), inplace=True)
-    
+    for column in df.select_dtypes(include=['float64', 'int64']).columns:
+        df[column].fillna(df[column].mean(), inplace=True)
+    for column in df.select_dtypes(include=['object']).columns:
+        df[column].fillna(df[column].mode()[0], inplace=True)
     return df
 
 def preprocess_data(df):
-    """ Perform any additional preprocessing like encoding and scaling """
-    # Example of encoding categorical columns, you can customize based on your data
-    # Assuming 'category_column' is categorical
-    df = pd.get_dummies(df, columns=['category_column'], drop_first=True)
+    if 'category_column' in df.columns:
+        df = pd.get_dummies(df, columns=['category_column'], drop_first=True)
     
-    # Scaling numerical features (example using StandardScaler)
     from sklearn.preprocessing import StandardScaler
-    scaler = StandardScaler()
-    df[['numerical_column1', 'numerical_column2']] = scaler.fit_transform(df[['numerical_column1', 'numerical_column2']])
+    numerical_columns = ['numerical_column1', 'numerical_column2']
+    
+    if all(col in df.columns for col in numerical_columns):
+        scaler = StandardScaler()
+        df[numerical_columns] = scaler.fit_transform(df[numerical_columns])
     
     return df
 
 def split_data(df, target_column):
-    """ Split data into features and target, then into training and testing sets """
+    if target_column not in df.columns:
+        print(f"Error: Target column '{target_column}' not found in the dataset.")
+        return None, None, None, None
+    
     X = df.drop(columns=[target_column])
     y = df[target_column]
     
-    # Splitting data into 80% train and 20% test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     return X_train, X_test, y_train, y_test
 
 if __name__ == "__main__":
-    # Path to your dataset file
-    file_path = 'path_to_your_file.xlsx'
+    file_path = 'ml_model/data/raw/cybersecurity_attacks.xlsx'
     
-    # Loading, cleaning, preprocessing, and splitting data
     data = load_data(file_path)
     if data is not None:
         cleaned_data = clean_data(data)
         preprocessed_data = preprocess_data(cleaned_data)
-        X_train, X_test, y_train, y_test = split_data(preprocessed_data, target_column='target_column_name')
-        print("Data preprocessing complete!")
+        
+        X_train, X_test, y_train, y_test = split_data(preprocessed_data, target_column='attack_type')
+
+        if X_train is not None:
+            print("Data preprocessing complete!")  
+        else:
+            print("Error during data preprocessing.")
