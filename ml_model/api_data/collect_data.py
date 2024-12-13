@@ -5,13 +5,11 @@ import csv
 import json
 import os
 
-# Directory to save data
+
 DATA_DIR = "../data/"
 os.makedirs(DATA_DIR, exist_ok=True)
 
-# -----------------------------
-# Twitter API Data Collection
-# -----------------------------
+
 def collect_twitter_data():
     # Twitter API credentials (replace with your own)
     API_KEY = "QewpIOX1bqQoGzABUDZWsbAWM"
