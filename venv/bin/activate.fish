@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/rajeev/Desktop/Real-Time-Cyber-Incident-Monitoring-and-Analysis-Tool/venv
+set -gx VIRTUAL_ENV /home/rajeev/Downloads/Real-Time-Cyber-Incident-Monitoring-and-Analysis-Tool/venv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH
