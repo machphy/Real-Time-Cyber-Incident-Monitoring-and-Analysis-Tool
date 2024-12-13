@@ -14,10 +14,10 @@ os.makedirs(DATA_DIR, exist_ok=True)
 # -----------------------------
 def collect_twitter_data():
     # Twitter API credentials (replace with your own)
-    API_KEY = "your_twitter_api_key"
-    API_SECRET_KEY = "your_secret_key"
-    ACCESS_TOKEN = "your_access_token"
-    ACCESS_SECRET = "your_access_secret"
+    API_KEY = "QewpIOX1bqQoGzABUDZWsbAWM"
+    API_SECRET_KEY = "XtPNn0Z2RXTwgY9H5vphZfOAk278ggc2vlRxtfaPpZ1WcCQGuQ"
+    ACCESS_TOKEN = "1479660185589141504-mQcCLzvREVsHoKnVLZdnVmBPMuPHMi"
+    ACCESS_SECRET = "hdzkkXZsqeeuN610gT4QY19OdgBOUnkt1UH6rQHgc7a2s"
 
     # Authenticate to Twitter
     auth = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
