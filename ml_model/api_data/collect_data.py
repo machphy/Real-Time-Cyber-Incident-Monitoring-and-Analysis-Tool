@@ -11,22 +11,22 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 
 def collect_twitter_data():
-    # Twitter API credentials (replace with your own)
+    
     API_KEY = "QewpIOX1bqQoGzABUDZWsbAWM"
     API_SECRET_KEY = "XtPNn0Z2RXTwgY9H5vphZfOAk278ggc2vlRxtfaPpZ1WcCQGuQ"
     ACCESS_TOKEN = "1479660185589141504-mQcCLzvREVsHoKnVLZdnVmBPMuPHMi"
     ACCESS_SECRET = "hdzkkXZsqeeuN610gT4QY19OdgBOUnkt1UH6rQHgc7a2s"
 
-    # Authenticate to Twitter
+
     auth = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
     api = tweepy.API(auth)
 
-    # Query tweets
+
     query = "cyber attack OR data breach -filter:retweets"
     tweets = tweepy.Cursor(api.search_tweets, q=query, lang="en", tweet_mode="extended").items(100)
 
-    # Save collected data
+    
     data = []
     for tweet in tweets:
         data.append({
