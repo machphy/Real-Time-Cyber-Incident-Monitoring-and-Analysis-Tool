@@ -9,11 +9,10 @@ DATA_DIR = "../data/"
 os.makedirs(DATA_DIR, exist_ok=True)
 
 
-TWITTER_API_KEY = os.getenv("TWITTER_API_KEY")
-TWITTER_API_SECRET = os.getenv("TWITTER_API_SECRET")
-TWITTER_ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
-TWITTER_ACCESS_SECRET = os.getenv("TWITTER_ACCESS_SECRET")
-
+API_KEY = "QewpIOX1bqQoGzABUDZWsbAWM"
+API_SECRET_KEY = "XtPNn0Z2RXTwgY9H5vphZfOAk278ggc2vlRxtfaPpZ1WcCQGuQ"
+ACCESS_TOKEN = "1479660185589141504-mQcCLzvREVsHoKnVLZdnVmBPMuPHMi"
+ACCESS_SECRET = "hdzkkXZsqeeuN610gT4QY19OdgBOUnkt1UH6rQHgc7a2s"
 
 def collect_twitter_data():
     """Fetch recent tweets related to cyber incidents."""
