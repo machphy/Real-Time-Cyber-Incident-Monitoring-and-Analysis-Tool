@@ -5,11 +5,10 @@ import csv
 import json
 import os
 
-# Directory to store collected data
 DATA_DIR = "../data/"
 os.makedirs(DATA_DIR, exist_ok=True)
 
-# Load API credentials from environment variables
+
 TWITTER_API_KEY = os.getenv("TWITTER_API_KEY")
 TWITTER_API_SECRET = os.getenv("TWITTER_API_SECRET")
 TWITTER_ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
@@ -19,16 +18,16 @@ TWITTER_ACCESS_SECRET = os.getenv("TWITTER_ACCESS_SECRET")
 def collect_twitter_data():
     """Fetch recent tweets related to cyber incidents."""
     try:
-        # Authenticate with Twitter API
+    
         auth = tweepy.OAuthHandler(TWITTER_API_KEY, TWITTER_API_SECRET)
         auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_SECRET)
         api = tweepy.API(auth, wait_on_rate_limit=True)
 
-        # Define search query
+
         query = "cyber attack OR data breach -filter:retweets"
         tweets = tweepy.Cursor(api.search_tweets, q=query, lang="en", tweet_mode="extended").items(100)
 
-        # Collect tweet data
+        
         data = []
         for tweet in tweets:
             data.append({
@@ -39,7 +38,7 @@ def collect_twitter_data():
                 "location": tweet.user.location
             })
 
-        # Save data to JSON file
+       
         with open(os.path.join(DATA_DIR, "twitter_data.json"), "w") as file:
             json.dump(data, file, indent=4)
 
@@ -63,7 +62,7 @@ def collect_news_data():
             link = article.find("a")["href"]
             articles.append({"headline": headline, "link": link})
 
-        # Save data to JSON file
+        
         with open(os.path.join(DATA_DIR, "news_data.json"), "w") as file:
             json.dump(articles, file, indent=4)
 
