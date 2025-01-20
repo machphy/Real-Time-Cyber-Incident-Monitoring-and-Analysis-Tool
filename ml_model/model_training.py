@@ -17,4 +17,4 @@ model_path = '../models/classifier.pkl'
 with open(model_path, 'wb') as model_file:
     pickle.dump(model, model_file)
 
-print(f'Model saved to {model_path}')     #i set model path in my file ok
+print(f'Model saved to {model_path}')     #set model path in my file ok
