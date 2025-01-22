@@ -1,54 +1,47 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import re
+import nltk
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import LabelEncoder
+import pickle
+import os
 
-def load_data(file_path):
-    try:
-        data = pd.read_excel(file_path)  
-        print(f"Data loaded successfully from {file_path}")
-        return data
-    except Exception as e:
-        print(f"Error loading data: {e}")
-        return None
+# Ensure necessary downloads
+nltk.download("stopwords")
+stop_words = set(stopwords.words("english"))
 
-def clean_data(df):
-    df.drop_duplicates(inplace=True)
-    for column in df.columns:
-        if df[column].dtype == 'object':  # Check for categorical columns
-            df[column].fillna(df[column].mode()[0], inplace=True)
-        else:  # Numeric columns
-            df[column].fillna(df[column].mean(), inplace=True)
-    return df
+# Define paths
+DATA_DIR = "../data/"
+MODEL_DIR = "../models/"
+os.makedirs(MODEL_DIR, exist_ok=True)
 
-def preprocess_data(df):
-    if 'category_column' in df.columns:
-        df = pd.get_dummies(df, columns=['category_column'], drop_first=True)
-    from sklearn.preprocessing import StandardScaler
-    numerical_columns = ['numerical_column1', 'numerical_column2']
-    if all(col in df.columns for col in numerical_columns):
-        scaler = StandardScaler()
-        df[numerical_columns] = scaler.fit_transform(df[numerical_columns])
-    return df
+# Load dataset
+df = pd.read_csv(os.path.join(DATA_DIR, "predefined_dataset.csv"))
 
-def split_data(df, target_column):
-    if target_column not in df.columns:
-        print(f"Error: Target column '{target_column}' not found in the dataset.")
-        return None, None, None, None
-    X = df.drop(columns=[target_column])
-    y = df[target_column]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    return X_train, X_test, y_train, y_test
+# Text Cleaning Function
+def clean_text(text):
+    text = re.sub(r"http\S+|www\S+|https\S+", "", text, flags=re.MULTILINE)  # Remove URLs
+    text = re.sub(r"\W", " ", text)  # Remove special characters
+    text = text.lower()  # Convert to lowercase
+    text = " ".join([word for word in text.split() if word not in stop_words])  # Remove stopwords
+    return text
 
-if __name__ == "__main__":
-    file_path = 'ml_model/data/raw/cybersecurity_attacks.xlsx'
-    data = load_data(file_path)
-    if data is not None:
-        print("Columns in the dataset:", data.columns)
-        cleaned_data = clean_data(data)
-        preprocessed_data = preprocess_data(cleaned_data)
-        target_column = 'Attack Type'  # Corrected to match the column name in the dataset
-        if target_column in preprocessed_data.columns:
-            X_train, X_test, y_train, y_test = split_data(preprocessed_data, target_column)
-            print("Data preprocessing complete!")
-        else:
-            print(f"Error: Target column '{target_column}' not found in the dataset.")
-# test
+# Apply text cleaning
+df["cleaned_text"] = df["Incident"].astype(str).apply(clean_text)
+
+# Convert text into numerical format (TF-IDF)
+vectorizer = TfidfVectorizer(max_features=500)
+X = vectorizer.fit_transform(df["cleaned_text"]).toarray()
+
+# Label encoding
+encoder = LabelEncoder()
+y = encoder.fit_transform(df["Details"])
+
+# Save preprocessed data & models
+pickle.dump(vectorizer, open(os.path.join(MODEL_DIR, "tfidf_vectorizer.pkl"), "wb"))
+pickle.dump(encoder, open(os.path.join(MODEL_DIR, "label_encoder.pkl"), "wb"))
+pickle.dump(X, open(os.path.join(DATA_DIR, "X_data.pkl"), "wb"))
+pickle.dump(y, open(os.path.join(DATA_DIR, "y_data.pkl"), "wb"))
+
+print("✅ Data preprocessing completed successfully!")
