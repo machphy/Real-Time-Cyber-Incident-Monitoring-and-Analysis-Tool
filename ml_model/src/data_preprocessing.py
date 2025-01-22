@@ -1,64 +1,47 @@
-import os
-import json
 import pandas as pd
 import re
-import string
 import nltk
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import LabelEncoder
 import pickle
+import os
 
-# Ensure NLTK stopwords are downloaded
-nltk.download('stopwords')
+# Ensure necessary downloads
+nltk.download("stopwords")
+stop_words = set(stopwords.words("english"))
 
-# Define file paths
+# Define paths
 DATA_DIR = "../data/"
-PROCESSED_DIR = "../processed_data/"
-os.makedirs(PROCESSED_DIR, exist_ok=True)
+MODEL_DIR = "../models/"
+os.makedirs(MODEL_DIR, exist_ok=True)
 
-# Load stopwords
-STOPWORDS = set(stopwords.words('english'))
+# Load dataset
+df = pd.read_csv(os.path.join(DATA_DIR, "predefined_dataset.csv"))
 
+# Text Cleaning Function
 def clean_text(text):
-    """Function to clean text data"""
+    text = re.sub(r"http\S+|www\S+|https\S+", "", text, flags=re.MULTILINE)  # Remove URLs
+    text = re.sub(r"\W", " ", text)  # Remove special characters
     text = text.lower()  # Convert to lowercase
-    text = re.sub(r'http\S+', '', text)  # Remove URLs
-    text = re.sub(f'[{string.punctuation}]', '', text)  # Remove punctuation
-    text = ' '.join([word for word in text.split() if word not in STOPWORDS])  # Remove stopwords
+    text = " ".join([word for word in text.split() if word not in stop_words])  # Remove stopwords
     return text
 
-def preprocess_data():
-    """Load, clean, and vectorize text data."""
-    # Load Twitter data
-    with open(os.path.join(DATA_DIR, "twitter_data.json"), "r") as file:
-        twitter_data = json.load(file)
-    
-    # Load News data
-    with open(os.path.join(DATA_DIR, "news_data.json"), "r") as file:
-        news_data = json.load(file)
-    
-    # Convert to DataFrame
-    twitter_df = pd.DataFrame(twitter_data)
-    news_df = pd.DataFrame(news_data)
-    
-    # Combine both datasets
-    twitter_df['source'] = 'Twitter'
-    news_df['source'] = 'News'
-    
-    df = pd.concat([twitter_df[['text', 'source']], news_df[['headline', 'source']].rename(columns={'headline': 'text'})])
-    df['clean_text'] = df['text'].apply(clean_text)
-    
-    # Vectorize text using TF-IDF
-    vectorizer = TfidfVectorizer(max_features=5000)
-    X = vectorizer.fit_transform(df['clean_text'])
-    
-    # Save preprocessed data
-    with open(os.path.join(PROCESSED_DIR, "X_data.pkl"), "wb") as file:
-        pickle.dump(X, file)
-    with open(os.path.join(PROCESSED_DIR, "vectorizer.pkl"), "wb") as file:
-        pickle.dump(vectorizer, file)
-    
-    print("Data preprocessing completed. Processed data saved.")
+# Apply text cleaning
+df["cleaned_text"] = df["Incident"].astype(str).apply(clean_text)
 
-if __name__ == "__main__":
-    preprocess_data()
+# Convert text into numerical format (TF-IDF)
+vectorizer = TfidfVectorizer(max_features=500)
+X = vectorizer.fit_transform(df["cleaned_text"]).toarray()
+
+# Label encoding
+encoder = LabelEncoder()
+y = encoder.fit_transform(df["Details"])
+
+# Save preprocessed data & models
+pickle.dump(vectorizer, open(os.path.join(MODEL_DIR, "tfidf_vectorizer.pkl"), "wb"))
+pickle.dump(encoder, open(os.path.join(MODEL_DIR, "label_encoder.pkl"), "wb"))
+pickle.dump(X, open(os.path.join(DATA_DIR, "X_data.pkl"), "wb"))
+pickle.dump(y, open(os.path.join(DATA_DIR, "y_data.pkl"), "wb"))
+
+print("✅ Data preprocessing completed successfully!")
