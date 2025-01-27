@@ -1,11 +1,11 @@
-/* Custom Styles for Incident Dashboard */
+
 body {
     font-family: 'Arial', sans-serif; /* Use a clean sans-serif font */
-    background-color: #f8f9fa; /* Light background for body */
+    background-color: #9cb8d3; /* Light background for body */
 }
 
 .navbar {
-    border-bottom: 2px solid #e2e8f0; /* Subtle border under the navbar */
+    border-bottom: 2px solid #71849e; /* Subtle border under the navbar */
 }
 
 h5 {
@@ -14,7 +14,7 @@ h5 {
 
 .incident-item {
     transition: all 0.3s ease; /* Smooth transition for hover effects */
-    background-color: white; /* White background for incident items */
+    background-color: rgb(179, 145, 145); /* White background for incident items */
     border-radius: 0.5rem; /* Rounded corners for incident items */
     padding: 10px; /* Padding inside incident items */
     margin: 10px 0; /* Margin for spacing between incident items */
