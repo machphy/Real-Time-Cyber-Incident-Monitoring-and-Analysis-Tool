@@ -9,7 +9,7 @@ import os
 
 # Ensure necessary downloads
 nltk.download("stopwords")
-stop_words = set(stopwords.words("hinglish"))
+stop_words = set(stopwords.words("english"))
 
 # Define paths
 DATA_DIR = "../data/"
