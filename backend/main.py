@@ -1,7 +1,4 @@
-from fastapi import FastAPI
+from database import Base, engine
 
-app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"message": "Cyber Incident Monitoring API is running!"}
+# Yeh command sare table crete krea .
+Base.metadata.create_all(bind=engine)
