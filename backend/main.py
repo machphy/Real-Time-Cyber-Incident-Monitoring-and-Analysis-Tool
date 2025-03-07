@@ -1,4 +1,11 @@
-from database import Base, engine
+from flask import Flask, jsonify
+from database import Incident, SessionLocal
 
-# Yeh command sare table crete krea .
-Base.metadata.create_all(bind=engine)
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return jsonify({"message": "Cyber Incident Monitoring API Running!"})
+
+if __name__ == "__main__":
+    app.run(debug=True)
