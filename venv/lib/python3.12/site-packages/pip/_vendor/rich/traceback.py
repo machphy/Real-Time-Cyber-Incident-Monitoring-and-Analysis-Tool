@@ -636,6 +636,7 @@ class Traceback:
 
         excluded = False
         for frame_index, frame in enumerate(stack.frames):
+
             if exclude_frames and frame_index in exclude_frames:
                 excluded = True
                 continue
@@ -719,6 +720,7 @@ class Traceback:
 
 
 if __name__ == "__main__":  # pragma: no cover
+
     from .console import Console
 
     console = Console()
@@ -742,6 +744,7 @@ if __name__ == "__main__":  # pragma: no cover
         bar(a)
 
     def error() -> None:
+
         try:
             try:
                 foo(0)
