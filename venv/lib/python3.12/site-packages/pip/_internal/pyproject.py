@@ -1,22 +1,16 @@
 import importlib.util
 import os
-import sys
 from collections import namedtuple
 from typing import Any, List, Optional
 
-if sys.version_info >= (3, 11):
-    import tomllib
-else:
-    from pip._vendor import tomli as tomllib
-
-from pip._vendor.packaging.requirements import InvalidRequirement
+from pip._vendor import tomli
+from pip._vendor.packaging.requirements import InvalidRequirement, Requirement
 
 from pip._internal.exceptions import (
     InstallationError,
     InvalidPyProjectBuildRequires,
     MissingPyProjectBuildRequires,
 )
-from pip._internal.utils.packaging import get_requirement
 
 
 def _is_list_of_str(obj: Any) -> bool:
@@ -67,7 +61,7 @@ def load_pyproject_toml(
 
     if has_pyproject:
         with open(pyproject_toml, encoding="utf-8") as f:
-            pp_toml = tomllib.loads(f.read())
+            pp_toml = tomli.loads(f.read())
         build_system = pp_toml.get("build-system")
     else:
         build_system = None
@@ -157,7 +151,7 @@ def load_pyproject_toml(
     # Each requirement must be valid as per PEP 508
     for requirement in requires:
         try:
-            get_requirement(requirement)
+            Requirement(requirement)
         except InvalidRequirement as error:
             raise InvalidPyProjectBuildRequires(
                 package=req_name,
