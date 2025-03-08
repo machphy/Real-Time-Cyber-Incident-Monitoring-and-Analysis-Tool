@@ -1,14 +1,13 @@
 from flask import Flask, jsonify
+from database import db_session, init_db  # ✅ Import Fix
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route("/")
 def home():
     return jsonify({"message": "Cyber Incident Monitoring API Running!"})
 
-@app.route('/incidents', methods=['GET'])
-def get_incidents():
-    return jsonify({"incidents": []})  # Abhi empty list return karega
-
-if __name__ == '__main__':
+# ✅ Start Backend & Init DB
+if __name__ == "__main__":
+    init_db()  # 🛠️ Initialize Tables
     app.run(debug=True)

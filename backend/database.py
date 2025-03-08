@@ -1,15 +1,19 @@
 from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import sessionmaker, scoped_session, declarative_base
 
-
+# Database Connection URL
 DATABASE_URL = "postgresql://rajeev:123456789@localhost/cyber_incidents"
 
+# Create Engine
 engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+# ✅ Session Banane Ka Tarika (Scoped Session)
+SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+
+# ✅ Base Model
 Base = declarative_base()
 
+# ✅ Incident Model
 class Incident(Base):
     __tablename__ = "incidents"
 
@@ -18,5 +22,9 @@ class Incident(Base):
     severity = Column(String)
     status = Column(String, default="open")
 
-# ✅ Table Create Karne Ke Liye
-Base.metadata.create_all(bind=engine)
+# ✅ Initialize Database
+def init_db():
+    Base.metadata.create_all(bind=engine)
+
+# ✅ Export Session for Use
+db_session = SessionLocal
