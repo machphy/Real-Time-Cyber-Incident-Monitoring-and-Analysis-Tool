@@ -1,13 +1,20 @@
 from flask import Flask, jsonify
-from database import db_session, init_db  # ✅ Import Fix
+from database import SessionLocal, Incident
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return jsonify({"message": "Cyber Incident Monitoring API Running!"})
+@app.route("/incidents", methods=["GET"])
+def get_incidents():
+    session = SessionLocal()
+    incidents = session.query(Incident).all()
+    session.close()
 
-# ✅ Start Backend & Init DB
+    incidents_data = [
+        {"id": inc.id, "description": inc.description, "severity": inc.severity, "status": inc.status}
+        for inc in incidents
+    ]
+    
+    return jsonify(incidents_data)
+
 if __name__ == "__main__":
-    init_db()  # 🛠️ Initialize Tables
     app.run(debug=True)
