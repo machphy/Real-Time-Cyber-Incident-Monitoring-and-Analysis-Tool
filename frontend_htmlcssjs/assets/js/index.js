@@ -150,3 +150,58 @@ $(document).ready(function () {
 
     // Real-time data updates using WebSocket or AJAX can be implemented here
 });
+
+$(document).ready(function () {
+    fetchIncidents();
+});
+
+function fetchIncidents() {
+    fetch("http://127.0.0.1:5000/incidents")  // Backend API URL
+        .then(response => response.json())
+        .then(data => {
+            let incidentList = $("#incidentList");
+            incidentList.empty();
+            data.forEach(incident => {
+                incidentList.append(`
+                    <div class="p-3 bg-light border rounded">
+                        <h5>${incident.title}</h5>
+                        <p>${incident.description}</p>
+                        <span class="badge bg-${getSeverityColor(incident.severity)}">${incident.severity}</span>
+                    </div>
+                `);
+            });
+        })
+        .catch(error => console.error("Error fetching incidents:", error));
+}
+
+function getSeverityColor(severity) {
+    switch (severity.toLowerCase()) {
+        case 'high': return 'danger';
+        case 'medium': return 'warning';
+        case 'low': return 'success';
+        default: return 'secondary';
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("http://127.0.0.1:5000/incidents")
+        .then(response => response.json())
+        .then(data => {
+            let incidentList = document.getElementById("incidentList");
+            incidentList.innerHTML = ""; // Pehle clear karna hai
+
+            data.forEach(incident => {
+                let incidentItem = `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">${incident.description}</h5>
+                            <p class="card-text"><strong>Severity:</strong> ${incident.severity}</p>
+                            <p class="card-text"><strong>Status:</strong> ${incident.status}</p>
+                        </div>
+                    </div>
+                `;
+                incidentList.innerHTML += incidentItem;
+            });
+        })
+        .catch(error => console.error("Error fetching incidents:", error));
+});
