@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-from database import Incident, SessionLocal
 
 app = Flask(__name__)
 
@@ -7,5 +6,9 @@ app = Flask(__name__)
 def home():
     return jsonify({"message": "Cyber Incident Monitoring API Running!"})
 
-if __name__ == "__main__":
+@app.route('/incidents', methods=['GET'])
+def get_incidents():
+    return jsonify({"incidents": []})  # Abhi empty list return karega
+
+if __name__ == '__main__':
     app.run(debug=True)
