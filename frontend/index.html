@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDR Cybersecurity Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <h2>EDR</h2>
+        <ul>
+            <li class="active">Dashboard</li>
+            <li> <a href="/frontend/Threat Logs/threat_logs.html"></a> Threat Logs</li>
+            <li>Reports</li>
+            <li>Settings</li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h1>Cyber Threat Dashboard</h1>
+        </header>
+
+        <!-- Incident Cards -->
+        <section class="stats">
+            <div class="card"><h3>Total Incidents</h3><p id="total-incidents">0</p></div>
+            <div class="card"><h3>Critical Threats</h3><p id="critical-threats">0</p></div>
+            <div class="card"><h3>Active Alerts</h3><p id="active-alerts">0</p></div>
+        </section>
+
+        <!-- Live Threat Graphs -->
+        <!-- <section class="charts">
+            <canvas id="incidentChart"></canvas>
+        </section> -->
+
+        <!-- Live Alerts -->
+        <section class="incident-table">
+            <h2>Live Incidents</h2>
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Type</th><th>Severity</th><th>Status</th><th>Timestamp</th></tr>
+                </thead>
+                <tbody id="incidentTable"></tbody>
+            </table>
+        </section>
+
+        <section id="live-threat-map" class="content-section">
+            <header><h1>Live Cyber Attack Map</h1></header>
+            <div id="map"></div>
+        </section>
+
+        <!-- live Alerts? -->
+
+        <section id="live-alerts" class="content-section">
+            <header><h1>Live Security Alerts</h1></header>
+            <div class="alerts-container">
+                <ul id="alerts-list"></ul>
+            </div>
+        </section>
+        
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

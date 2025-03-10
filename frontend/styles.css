@@ -1,0 +1,116 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: #1e1e1e;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.sidebar h2 { color: #ff4c4c; text-align: center; }
+
+.sidebar ul { list-style: none; padding: 0; }
+
+.sidebar ul li {
+    padding: 15px;
+    margin: 10px 0;
+    background: #333;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.sidebar ul li:hover, .active { background: #ff4c4c; }
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Incident Cards */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: #222;
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.card p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff4c4c;
+}
+
+/* Charts */
+.charts {
+    padding: 10px;
+    background: #1e1e1e;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Tables */
+.incident-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.incident-table th, .incident-table td {
+    padding: 10px;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+.incident-table th { background: #333; }
+
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+/* Live Alerts Styling */
+.alerts-container {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 10px;
+    height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+#alerts-list {
+    list-style: none;
+    padding: 0;
+}
+
+.alert-item {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.critical { background: #ff4c4c; color: white; }
+.high { background: #ffcc00; color: black; }
+.medium { background: #00ccff; color: white; }
+.low { background: #00ff99; color: black; }
