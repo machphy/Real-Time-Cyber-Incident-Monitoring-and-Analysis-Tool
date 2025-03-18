@@ -1,116 +1,161 @@
-/* Global Styles */
+/* 🌙 Dark Theme with Glassmorphism */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #121212;
-    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: #fff;
     margin: 0;
     display: flex;
 }
 
-/* Sidebar */
+/* 🔥 Sidebar Styling */
 .sidebar {
     width: 250px;
-    background: #1e1e1e;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 0 10px rgba(255, 255, 255, 0.1);
     padding: 20px;
-    min-height: 100vh;
+    position: fixed;
 }
 
-.sidebar h2 { color: #ff4c4c; text-align: center; }
+.sidebar h2 {
+    text-align: center;
+    color: #ff4c4c;
+}
 
-.sidebar ul { list-style: none; padding: 0; }
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
 
 .sidebar ul li {
     padding: 15px;
     margin: 10px 0;
-    background: #333;
-    cursor: pointer;
     text-align: center;
     border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.sidebar ul li:hover, .active { background: #ff4c4c; }
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
 
-/* Main Content */
+.sidebar ul li:hover {
+    background: #ff4c4c;
+    transform: scale(1.05);
+}
+
+/* 🚀 Main Content */
 .main-content {
-    flex: 1;
+    margin-left: 270px;
     padding: 20px;
+    width: 100%;
 }
 
-/* Incident Cards */
-.stats {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
-
-.card {
-    background: #222;
-    padding: 20px;
-    width: 30%;
+/* 🔥 Header Styling */
+header {
     text-align: center;
-    border-radius: 10px;
-}
-
-.card p {
+    padding: 20px;
     font-size: 24px;
     font-weight: bold;
     color: #ff4c4c;
 }
 
-/* Charts */
-.charts {
-    padding: 10px;
-    background: #1e1e1e;
-    border-radius: 10px;
-    margin-bottom: 20px;
+/* 📊 Incident Cards */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
-/* Tables */
+.card {
+    width: 30%;
+    padding: 20px;
+    text-align: center;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+
+/* 🎯 Circular Graph Size Adjust */
+.charts canvas {
+    max-width: 300px;  /* Chhota kar diya */
+    max-height: 300px; /* Fixed height */
+    display: block;
+    margin: auto;
+}
+
+
+/* 🛑 Live Threat Table */
+.incident-table {
+    margin: 20px auto;
+    width: 90%;
+}
+
 .incident-table table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .incident-table th, .incident-table td {
     padding: 10px;
-    border: 1px solid #333;
+    border: 1px solid #fff;
     text-align: center;
 }
 
-.incident-table th { background: #333; }
+.incident-table th {
+    background: #ff4c4c;
+}
 
+/* 🌍 Live Threat Map */
 #map {
-    height: 500px;
-    width: 100%;
+    height: 400px;
+    width: 80%;
+    margin: 20px auto;
     border-radius: 10px;
-    margin-top: 10px;
-    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }
 
-/* Live Alerts Styling */
-.alerts-container {
-    background: #1e1e1e;
-    padding: 15px;
+/* 🔔 Live Alerts */
+#live-alerts {
+    margin: 20px auto;
+    width: 80%;
+    padding: 10px;
+    background: rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
     border-radius: 10px;
-    height: 300px;
-    overflow-y: auto;
-    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
 }
 
-#alerts-list {
+.alerts-container ul {
     list-style: none;
     padding: 0;
 }
 
-.alert-item {
+.alerts-container li {
     padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 4px solid #ff4c4c;
     margin: 5px 0;
-    border-radius: 5px;
-    font-weight: bold;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-.critical { background: #ff4c4c; color: white; }
-.high { background: #ffcc00; color: black; }
-.medium { background: #00ccff; color: white; }
-.low { background: #00ff99; color: black; }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

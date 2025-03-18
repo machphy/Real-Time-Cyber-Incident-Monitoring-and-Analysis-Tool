@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
             this.classList.add("active");
 
             sections.forEach(section => section.classList.add("hidden"));
-
             const targetSection = document.getElementById(this.dataset.target);
             if (targetSection) {
                 targetSection.classList.remove("hidden");
@@ -16,41 +15,84 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Fake Incident Data
-    const incidentData = [
-        { id: 1, type: "DDoS Attack", severity: "Critical", source: "192.168.1.10", status: "Active", timestamp: "2025-03-09 12:00" },
-        { id: 2, type: "Unauthorized Access", severity: "High", source: "192.168.1.22", status: "Resolved", timestamp: "2025-03-09 11:45" }
-    ];
-
-    const tableBody = document.getElementById("incidentTable");
-
-    incidentData.forEach(incident => {
-        const row = document.createElement("tr");
-        row.innerHTML = `<td>${incident.id}</td><td>${incident.type}</td><td>${incident.severity}</td><td>${incident.source}</td><td>${incident.status}</td><td>${incident.timestamp}</td>`;
-        tableBody.appendChild(row);
-    });
-
-    document.getElementById("total-incidents").innerText = incidentData.length;
-    document.getElementById("critical-threats").innerText = incidentData.filter(i => i.severity === "Critical").length;
-    document.getElementById("active-alerts").innerText = incidentData.filter(i => i.status === "Active").length;
-
-    // Incident Chart
-    new Chart(document.getElementById("incidentChart"), {
-        type: 'pie',
-        data: {
-            labels: ['DDoS', 'Unauthorized Access'],
-            datasets: [{
-                data: [1, 1],
-                backgroundColor: ['#ff4c4c', '#ffcc00']
-            }]
-        }
-    });
+    fetchIncidents();  // Fetch incidents on page load
+    loadGraph();       // Load graph on page load
+    fetchLiveAlerts(); // Fetch live alerts
 });
 
 
+// 🚀 Fetch Threat Logs from API and Update UI
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("http://127.0.0.1:5000/api/incidents") // Fetch data from Flask API
+        .then(response => response.json())
+        .then(data => {
+            let tableBody = document.getElementById("incidentTable");
+            if (!tableBody) return;
+            tableBody.innerHTML = "";
+
+            data.forEach(incident => {
+                let row = `<tr>
+                    <td>${incident.id}</td>
+                    <td>${incident.description}</td>
+                    <td>${incident.severity}</td>
+                    <td>${incident.status}</td>
+                    <td>${incident.created_at}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+
+            // Update statistics
+            document.getElementById("total-incidents").innerText = data.length;
+            document.getElementById("critical-threats").innerText = data.filter(i => i.severity === "Critical").length;
+            document.getElementById("active-alerts").innerText = data.filter(i => i.status === "Active").length;
+        })
+        .catch(error => console.error("Error fetching incidents:", error));
+});
+// Load data on page load
+document.addEventListener("DOMContentLoaded", fetchIncidents);
+
+
+// 🔥 WebSocket for Live Alerts
+function fetchLiveAlerts() {
+    let socket = new WebSocket("ws://127.0.0.1:5000/ws/alerts");
+    let alertsList = document.getElementById("alerts-list");
+
+    socket.onmessage = function (event) {
+        let alertData = JSON.parse(event.data);
+        let listItem = document.createElement("li");
+        listItem.innerHTML = `🚨 <strong>${alertData.type}</strong> - <b>${alertData.severity}</b> - ${alertData.source_ip} @ ${alertData.timestamp}`;
+        listItem.classList.add("live-alert");
+        alertsList.prepend(listItem);
+    };
+}
+
+// 📊 Load Circular Graph (Smaller Size)
+function loadGraph() {
+    const ctx = document.getElementById("incidentChart").getContext("2d");
+    new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: ['Low', 'Medium', 'High', 'Critical'],
+            datasets: [{
+                data: [5, 10, 7, 3],  // Sample Data
+                backgroundColor: ["#4caf50", "#ff9800", "#f44336", "#9c27b0"],
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "65%", // Reduce size inside
+            plugins: {
+                legend: { position: "bottom" }
+            }
+        }
+    });
+}
+
+// 🌍 Live Threat Map Update
 document.addEventListener("DOMContentLoaded", function () {
     var map = L.map('map').setView([20, 0], 2);
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
@@ -70,6 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(fetchAttackData, 5000);
 });
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
     var socket = io.connect("http://127.0.0.1:5000");
     var alertsList = document.getElementById("alerts-list");
@@ -79,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
         alertItem.classList.add("alert-item", alert.severity.toLowerCase());
         alertItem.innerHTML = `<b>${alert.type}</b> - ${alert.severity} <br> IP: ${alert.source_ip} <br> ${alert.timestamp}`;
         
-        alertsList.prepend(alertItem); // Add to the top
+        alertsList.prepend(alertItem);
     });
 });
-

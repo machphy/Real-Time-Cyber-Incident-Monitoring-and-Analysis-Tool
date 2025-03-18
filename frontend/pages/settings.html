@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>EDR</h2>
+        <ul>
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="threat_logs.html">Threat Logs</a></li>
+            <li><a href="reports.html">Reports</a></li>
+            <li class="active">Settings</li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <header>
+            <h1>System Settings</h1>
+        </header>
+
+        <section class="settings-form">
+            <h2>Update System Preferences</h2>
+            <form>
+                <label for="logLevel">Log Level:</label>
+                <select id="logLevel">
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+
+                <label for="notifications">Enable Notifications:</label>
+                <input type="checkbox" id="notifications" checked>
+
+                <button type="submit">Save Settings</button>
+            </form>
+        </section>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>

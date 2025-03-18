@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>EDR</h2>
+        <ul>
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="threat_logs.html">Threat Logs</a></li>
+            <li class="active">Reports</li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <header>
+            <h1>Security Reports</h1>
+        </header>
+
+        <section class="reports-section">
+            <h2>Monthly Threat Analysis</h2>
+            <canvas id="reportsChart"></canvas>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>
