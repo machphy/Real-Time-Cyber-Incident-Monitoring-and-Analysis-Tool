@@ -1,10 +1,8 @@
-from backend.database import db  # Ensure correct import
+from backend.database import db
 
 class Incident(db.Model):
-    __tablename__ = "incidents"
-
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.Text, nullable=False)
+    description = db.Column(db.String(255), nullable=False)
     severity = db.Column(db.String(50), nullable=False)
-    source_ip = db.Column(db.String(50), nullable=False)
-    timestamp = db.Column(db.DateTime, server_default=db.func.now())
+    status = db.Column(db.String(50), default="pending")
+    created_at = db.Column(db.DateTime, server_default=db.func.now())

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Logs</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>EDR</h2>
+        <ul>
+            <li><a href="../index.html">Dashboard</a></li>
+            <li class="active">Threat Logs</li>
+            <li><a href="reports.html">Reports</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <header>
+            <h1>Threat Logs</h1>
+        </header>
+
+        <section class="incident-table">
+            <h2>Recent Incidents</h2>
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Type</th><th>Severity</th><th>Status</th><th>Timestamp</th></tr>
+                </thead>
+                <tbody id="incidentTable"></tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>

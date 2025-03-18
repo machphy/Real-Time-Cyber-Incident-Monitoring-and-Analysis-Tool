@@ -11,14 +11,15 @@
 
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
-        <h2>EDR</h2>
-        <ul>
-            <li class="active">Dashboard</li>
-            <li> <a href="/frontend/Threat Logs/threat_logs.html"></a> Threat Logs</li>
-            <li>Reports</li>
-            <li>Settings</li>
-        </ul>
-    </nav>
+    <h2>EDR</h2>
+    <ul>
+        <li class="active"><a href="index.html">🏠 Dashboard</a></li>
+        <li><a href="pages/threat_logs.html">⚠️ Threat Logs</a></li>
+        <li><a href="pages/reports.html">📊 Reports</a></li>
+        <li><a href="pages/settings.html">⚙️ Settings</a></li>
+    </ul>
+</nav>
+
 
     <!-- Main Content -->
     <div class="main-content">
@@ -34,9 +35,9 @@
         </section>
 
         <!-- Live Threat Graphs -->
-        <!-- <section class="charts">
+        <section class="charts">
             <canvas id="incidentChart"></canvas>
-        </section> -->
+        </section>
 
         <!-- Live Alerts -->
         <section class="incident-table">

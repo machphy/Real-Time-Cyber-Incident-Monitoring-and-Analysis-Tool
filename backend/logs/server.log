@@ -1,0 +1,25 @@
+2025-03-18 23:12:00,603 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-18 23:12:00,604 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 23:12:00,604 - INFO -  * Restarting with stat
+2025-03-18 23:12:01,079 - WARNING -  * Debugger is active!
+2025-03-18 23:12:01,081 - INFO -  * Debugger PIN: 108-777-592
+2025-03-18 23:12:59,234 - INFO - 127.0.0.1 - - [18/Mar/2025 23:12:59] "[35m[1mGET /api/incidents/ HTTP/1.1[0m" 500 -
+2025-03-18 23:41:27,710 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-18 23:41:27,710 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 23:41:27,710 - INFO -  * Restarting with watchdog (inotify)
+2025-03-18 23:41:28,163 - WARNING -  * Debugger is active!
+2025-03-18 23:41:28,167 - INFO -  * Debugger PIN: 108-777-592
+2025-03-18 23:52:34,189 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-18 23:52:34,189 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 23:52:34,189 - INFO -  * Restarting with watchdog (inotify)
+2025-03-18 23:52:34,648 - WARNING -  * Debugger is active!
+2025-03-18 23:52:34,650 - INFO -  * Debugger PIN: 108-777-592
+2025-03-18 23:53:34,360 - INFO - 127.0.0.1 - - [18/Mar/2025 23:53:34] "[33mGET /api/test-alert HTTP/1.1[0m" 404 -
+2025-03-18 23:55:04,448 - INFO -  * Detected change in '/home/rajeev/Downloads/Real-Time-Cyber-Incident-Monitoring-and-Analysis-Tool/backend/routes/incidents.py', reloading
+2025-03-18 23:55:04,451 - INFO -  * Detected change in '/home/rajeev/Downloads/Real-Time-Cyber-Incident-Monitoring-and-Analysis-Tool/backend/routes/incidents.py', reloading
+2025-03-18 23:55:04,626 - INFO -  * Detected change in '/home/rajeev/Downloads/Real-Time-Cyber-Incident-Monitoring-and-Analysis-Tool/backend/routes/incidents.py', reloading
+2025-03-18 23:55:04,628 - INFO -  * Detected change in '/home/rajeev/Downloads/Real-Time-Cyber-Incident-Monitoring-and-Analysis-Tool/backend/routes/incidents.py', reloading
+2025-03-18 23:55:04,755 - INFO -  * Restarting with watchdog (inotify)
