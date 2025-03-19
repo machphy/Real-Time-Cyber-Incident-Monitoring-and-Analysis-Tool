@@ -1,12 +1,16 @@
 import logging
-from flask import Flask, send_from_directory
+import threading
+import time
+import random
+import os
+from flask import Flask, send_from_directory, jsonify, render_template
 from flask_cors import CORS
 from flask_socketio import SocketIO
-from database import db  # ✅ Database Import
-from routes.incidents import incidents_bp
+from backend.database import db  # ✅ Correct Import
+from backend.routes.incidents import incidents_bp  # ✅ Correct Import
 
-# ✅ Flask App Initialization
-app = Flask(__name__, static_folder="../frontend", template_folder="../frontend")
+# ✅ Initialize Flask App
+app = Flask(__name__, static_folder=os.path.abspath("frontend/static"), template_folder=os.path.abspath("frontend"))
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -22,35 +26,40 @@ with app.app_context():
 # ✅ Register Routes
 app.register_blueprint(incidents_bp)
 
-# ✅ Serve Frontend Files
+# ✅ Redirect /index.html to /
+@app.route("/index.html")
+def redirect_to_home():
+    return serve_dashboard()  # ✅ Redirect to the main dashboard
+
+
+# ✅ Serve Dashboard
 @app.route("/")
 def serve_dashboard():
-    return send_from_directory(app.static_folder, "index.html")
+    return render_template("index.html")  # ✅ Fix index.html loading issue
+
+# ✅ Serve Additional Pages (Threat Logs, Reports, Settings)
+@app.route("/pages/<page>")
+def serve_pages(page):
+    allowed_pages = ["threat_logs.html", "reports.html", "settings.html"]
+    if page in allowed_pages:
+        return render_template(f"pages/{page}")  # ✅ Fix: Use correct folder path
+    return "Page Not Found", 404
+
+# ✅ Serve Static Files (CSS, JS)
+@app.route("/static/<path:filename>")
+def serve_static(filename):
+    return send_from_directory(app.static_folder, filename)
 
 # ✅ Setup Logging
-logging.basicConfig(filename='backend/logs/server.log', level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename="backend/logs/server.log", level=logging.INFO,
+                    format="%(asctime)s - %(levelname)s - %(message)s")
 
 @app.route('/test-log')
 def test_log():
     app.logger.info("Test log entry")
     return "Log entry added", 200
 
-# ✅ Run Flask with SocketIO
-if __name__ == "__main__":
-    print("🚀 Starting Flask Server...")
-    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
-
-
-from flask import Flask, jsonify
-from flask_socketio import SocketIO
-import threading
-import time
-import random
-
-app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
-
+# ✅ Generate Fake Alerts for Testing
 def generate_fake_alert():
     alert_types = ["DDoS Attack", "Malware Detected", "Unauthorized Access", "Brute Force"]
     severities = ["Critical", "High", "Medium", "Low"]
@@ -62,24 +71,22 @@ def generate_fake_alert():
         "timestamp": time.strftime('%Y-%m-%d %H:%M:%S')
     }
 
+# ✅ Emit Fake Alerts Every 5 Seconds
 def send_alerts():
     while True:
         alert = generate_fake_alert()
         socketio.emit("new_alert", alert)
+        logging.info(f"🔔 New Alert: {alert}")  # ✅ Log alerts
         time.sleep(5)  # Send a new alert every 5 seconds
 
-@app.route('/alerts')
+@app.route('/api/alerts')
 def get_alerts():
     return jsonify([generate_fake_alert() for _ in range(5)])
 
-if __name__ == '__main__':
-    threading.Thread(target=send_alerts, daemon=True).start()
-    socketio.run(app, debug=True)
+# ✅ Start Background Alert Thread
+threading.Thread(target=send_alerts, daemon=True).start()
 
-
-
-from flask import Flask
-from routes.incidents import incidents_bp  # Import your routes
-
-app = Flask(__name__)
-app.register_blueprint(incidents_bp)  # Make sure this line is present!
+# ✅ Run Flask with SocketIO
+if __name__ == "__main__":
+    print("🚀 Starting Flask Server...")
+    socketio.run(app, host="127.0.0.1", port=5000, debug=True)

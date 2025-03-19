@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDR Cybersecurity Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="static/script.js"></script>
+
+    
 </head>
 <body>
 
@@ -44,10 +46,17 @@
             <h2>Live Incidents</h2>
             <table>
                 <thead>
-                    <tr><th>ID</th><th>Type</th><th>Severity</th><th>Status</th><th>Timestamp</th></tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>Timestamp</th>
+                    </tr>
                 </thead>
-                <tbody id="incidentTable"></tbody>
+                <tbody id="incidentTable"></tbody>  <!-- ✅ Make Sure This ID Exists -->
             </table>
+            
         </section>
 
         <section id="live-threat-map" class="content-section">
@@ -70,3 +79,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+
