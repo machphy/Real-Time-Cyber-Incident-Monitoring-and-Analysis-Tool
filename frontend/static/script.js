@@ -22,32 +22,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // 🚀 Fetch Threat Logs from API and Update UI
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("http://127.0.0.1:5000/api/incidents") // Fetch data from Flask API
+function fetchIncidents() {
+    fetch("http://127.0.0.1:5000/api/incidents")
         .then(response => response.json())
         .then(data => {
             let tableBody = document.getElementById("incidentTable");
             if (!tableBody) return;
-            tableBody.innerHTML = "";
+            tableBody.innerHTML = ""; // Clear old data
 
             data.forEach(incident => {
-                let row = `<tr>
-                    <td>${incident.id}</td>
-                    <td>${incident.description}</td>
-                    <td>${incident.severity}</td>
-                    <td>${incident.status}</td>
-                    <td>${incident.created_at}</td>
-                </tr>`;
+                let row = `
+                    <tr>
+                        <td>${incident.id}</td>
+                        <td>${incident.description}</td>
+                        <td>${incident.severity}</td>
+                        <td>${incident.status}</td>
+                        <td>${incident.created_at}</td>
+                    </tr>`;
                 tableBody.innerHTML += row;
             });
 
-            // Update statistics
+            // ✅ Update Stats on Dashboard
             document.getElementById("total-incidents").innerText = data.length;
             document.getElementById("critical-threats").innerText = data.filter(i => i.severity === "Critical").length;
             document.getElementById("active-alerts").innerText = data.filter(i => i.status === "Active").length;
         })
         .catch(error => console.error("Error fetching incidents:", error));
-});
+}
+
+// ✅ Run fetchIncidents() Every 5 Seconds for Live Updates
+setInterval(fetchIncidents, 5000);
+
+
 // Load data on page load
 document.addEventListener("DOMContentLoaded", fetchIncidents);
 
@@ -113,16 +119,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+var socket = io.connect("http://127.0.0.1:5000");
 
-document.addEventListener("DOMContentLoaded", function () {
-    var socket = io.connect("http://127.0.0.1:5000");
-    var alertsList = document.getElementById("alerts-list");
-
-    socket.on("new_alert", function (alert) {
-        var alertItem = document.createElement("li");
-        alertItem.classList.add("alert-item", alert.severity.toLowerCase());
-        alertItem.innerHTML = `<b>${alert.type}</b> - ${alert.severity} <br> IP: ${alert.source_ip} <br> ${alert.timestamp}`;
-        
-        alertsList.prepend(alertItem);
-    });
+socket.on("new_alert", function (alert) {
+    var alertItem = document.createElement("li");
+    alertItem.classList.add("alert-item", alert.severity.toLowerCase());
+    alertItem.innerHTML = `<b>${alert.type}</b> - ${alert.severity} <br> IP: ${alert.source_ip} <br> ${alert.timestamp}`;
+    
+    document.getElementById("alerts-list").prepend(alertItem);
 });
