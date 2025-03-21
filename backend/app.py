@@ -10,7 +10,11 @@ from backend.database import db  # ✅ Correct Import
 from backend.routes.incidents import incidents_bp  # ✅ Correct Import
 
 # ✅ Initialize Flask App
-app = Flask(__name__, static_folder=os.path.abspath("frontend/static"), template_folder=os.path.abspath("frontend"))
+app = Flask(
+    __name__,
+    static_folder=os.path.abspath("frontend/static"),
+    template_folder=os.path.abspath("frontend")
+)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -29,20 +33,19 @@ app.register_blueprint(incidents_bp)
 # ✅ Redirect /index.html to /
 @app.route("/index.html")
 def redirect_to_home():
-    return serve_dashboard()  # ✅ Redirect to the main dashboard
-
+    return serve_dashboard()
 
 # ✅ Serve Dashboard
 @app.route("/")
 def serve_dashboard():
-    return render_template("index.html")  # ✅ Fix index.html loading issue
+    return render_template("index.html")
 
 # ✅ Serve Additional Pages (Threat Logs, Reports, Settings)
 @app.route("/pages/<page>")
 def serve_pages(page):
     allowed_pages = ["threat_logs.html", "reports.html", "settings.html"]
     if page in allowed_pages:
-        return render_template(f"pages/{page}")  # ✅ Fix: Use correct folder path
+        return render_template(f"pages/{page}")
     return "Page Not Found", 404
 
 # ✅ Serve Static Files (CSS, JS)
@@ -51,19 +54,23 @@ def serve_static(filename):
     return send_from_directory(app.static_folder, filename)
 
 # ✅ Setup Logging
-logging.basicConfig(filename="backend/logs/server.log", level=logging.INFO,
+LOG_FILE = "backend/logs/server.log"
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
                     format="%(asctime)s - %(levelname)s - %(message)s")
 
-@app.route('/test-log')
-def test_log():
-    app.logger.info("Test log entry")
-    return "Log entry added", 200
+@app.route('/api/logs', methods=['GET'])
+def get_logs():
+    try:
+        with open(LOG_FILE, "r") as log_file:
+            logs = log_file.readlines()[-20:]  # Fetch the last 20 log entries
+        return jsonify({"logs": logs})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # ✅ Generate Fake Alerts for Testing
 def generate_fake_alert():
     alert_types = ["DDoS Attack", "Malware Detected", "Unauthorized Access", "Brute Force"]
     severities = ["Critical", "High", "Medium", "Low"]
-    
     return {
         "type": random.choice(alert_types),
         "severity": random.choice(severities),
