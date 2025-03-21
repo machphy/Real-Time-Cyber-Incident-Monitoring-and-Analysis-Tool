@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchIncidents();  // Fetch incidents on page load
     loadGraph();       // Load graph on page load
     fetchLiveAlerts(); // Fetch live alerts
+    fetchLogs();       // Fetch logs on page load
 });
-
 
 // 🚀 Fetch Threat Logs from API and Update UI
 function fetchIncidents() {
@@ -50,13 +50,29 @@ function fetchIncidents() {
         .catch(error => console.error("Error fetching incidents:", error));
 }
 
+// ✅ Fetch Logs from Server Log File and Display on UI
+function fetchLogs() {
+    fetch("http://127.0.0.1:5000/api/logs")
+        .then(response => response.json())
+        .then(data => {
+            let logsContainer = document.getElementById("logs-container");
+            if (!logsContainer) return;
+
+            logsContainer.innerHTML = ""; // Clear previous logs
+            data.logs.forEach(log => {
+                let logEntry = document.createElement("p");
+                logEntry.textContent = log;
+                logsContainer.appendChild(logEntry);
+            });
+        })
+        .catch(error => console.error("Error fetching logs:", error));
+}
+
+// ✅ Run fetchLogs() Every 5 Seconds for Live Log Updates
+setInterval(fetchLogs, 5000);
+
 // ✅ Run fetchIncidents() Every 5 Seconds for Live Updates
 setInterval(fetchIncidents, 5000);
-
-
-// Load data on page load
-document.addEventListener("DOMContentLoaded", fetchIncidents);
-
 
 // 🔥 WebSocket for Live Alerts
 function fetchLiveAlerts() {
@@ -117,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchAttackData();
     setInterval(fetchAttackData, 5000);
 });
-
 
 var socket = io.connect("http://127.0.0.1:5000");
 
