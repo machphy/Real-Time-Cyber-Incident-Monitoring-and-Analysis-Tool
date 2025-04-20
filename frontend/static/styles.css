@@ -1,161 +1,176 @@
-/* 🌙 Dark Theme with Glassmorphism */
+/* static/styles.css */
+
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #cadd77;
-    color: #000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    display: flex;
-}
-
-/* 🔥 Sidebar Styling */
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    box-shadow: 2px 0 10px rgba(255, 255, 255, 0.1);
-    padding: 20px;
+    padding: 0;
+    background: #f4f6fa;
+    color: #333;
+  }
+  
+  .sidebar {
     position: fixed;
-}
-
-.sidebar h2 {
+    width: 220px;
+    height: 100vh;
+    background-color: #1f2937;
+    padding-top: 20px;
+    color: #fff;
+  }
+  
+  .sidebar h2 {
     text-align: center;
-    color: #ff4c4c;
-}
-
-.sidebar ul {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #10b981;
+  }
+  
+  .sidebar ul {
     list-style: none;
     padding: 0;
-}
-
-.sidebar ul li {
-    padding: 15px;
-    margin: 10px 0;
-    text-align: center;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
+  }
+  
+  .sidebar ul li {
+    padding: 15px 20px;
+  }
+  
+  .sidebar ul li.active,
+  .sidebar ul li:hover {
+    background-color: #374151;
+  }
+  
+  .sidebar ul li a {
     color: white;
-    display: block;
-}
-
-.sidebar ul li:hover {
-    background: #ff4c4c;
-    transform: scale(1.05);
-}
-
-/* 🚀 Main Content */
-.main-content {
-    margin-left: 270px;
-    padding: 20px;
-    width: 100%;
-}
-
-/* 🔥 Header Styling */
-header {
-    text-align: center;
-    padding: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #ff4c4c;
-}
-
-/* 📊 Incident Cards */
-.stats {
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .main-content {
+    margin-left: 220px;
+    padding: 30px;
+  }
+  
+  header h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .stats {
     display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.card {
-    width: 30%;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .card {
+    background: white;
     padding: 20px;
-    text-align: center;
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.2);
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-
-/* 🎯 Circular Graph Size Adjust */
-.charts canvas {
-    max-width: 300px;  /* Chhota kar diya */
-    max-height: 300px; /* Fixed height */
-    display: block;
-    margin: auto;
-}
-
-
-/* 🛑 Live Threat Table */
-.incident-table {
-    margin: 20px auto;
-    width: 90%;
-}
-
-.incident-table table {
+    flex: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 5px solid #10b981;
+    border-radius: 10px;
+  }
+  
+  .card h3 {
+    margin-top: 0;
+  }
+  
+  .log-section {
+    background: white;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .charts, .incident-table, .content-section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .incident-table table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.incident-table th, .incident-table td {
+  }
+  
+  .incident-table th, .incident-table td {
+    border: 1px solid #ccc;
     padding: 10px;
-    border: 1px solid #fff;
     text-align: center;
-}
-
-.incident-table th {
-    background: #ff4c4c;
-}
-
-/* 🌍 Live Threat Map */
-#map {
+  }
+  
+  .incident-table th {
+    background-color: #f3f4f6;
+  }
+  
+  #incidentChart {
+    height: 300px !important;
+  }
+  
+  .ml-form-section {
+    background: white;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .ml-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .ml-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .ml-form button {
+    padding: 10px;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .ml-form button:hover {
+    background: #059669;
+  }
+  
+  #map {
     height: 400px;
-    width: 80%;
-    margin: 20px auto;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-}
-
-/* 🔔 Live Alerts */
-#live-alerts {
-    margin: 20px auto;
-    width: 80%;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .live-alert {
+    background-color: #fef3c7;
     padding: 10px;
-    background: rgba(255, 0, 0, 0.2);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-    border-radius: 10px;
-}
-
-.alerts-container ul {
-    list-style: none;
-    padding: 0;
-}
-
-.alerts-container li {
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border-left: 4px solid #ff4c4c;
     margin: 5px 0;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+    border-left: 4px solid #f59e0b;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+  
+  .alert-item.critical {
+    border-left-color: #dc2626;
+  }
+  
+  .alert-item.high {
+    border-left-color: #f97316;
+  }
+  
+  .alert-item.medium {
+    border-left-color: #eab308;
+  }
+  
+  .alert-item.low {
+    border-left-color: #10b981;
+  }
+  
