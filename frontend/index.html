@@ -1,89 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDR Cybersecurity Dashboard</title>
-    <link rel="stylesheet" href="static/styles.css">
-    <script src="static/script.js"></script>
-
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDR Cybersecurity Dashboard</title>
+  <link rel="stylesheet" href="static/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer src="static/script.js"></script>
 </head>
 <body>
-
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar">
+  <nav class="sidebar">
     <h2>EDR</h2>
     <ul>
-        <li class="active"><a href="index.html">🏠 Dashboard</a></li>
-        <li><a href="pages/threat_logs.html">⚠️ Threat Logs</a></li>
-        <li><a href="pages/reports.html">📊 Reports</a></li>
-        <li><a href="pages/settings.html">⚙️ Settings</a></li>
+      <li class="active"><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="pages/threat_logs.html">⚠️ Threat Logs</a></li>
+      <li><a href="pages/reports.html">📊 Reports</a></li>
+      <li><a href="pages/settings.html">⚙️ Settings</a></li>
     </ul>
-</nav>
+  </nav>
 
+  <div class="main-content">
+    <header><h1>Cyber Threat Dashboard</h1></header>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <header>
-            <h1>Cyber Threat Dashboard</h1>
-        </header>
+    <section class="stats">
+      <div class="card"><h3>Total Incidents</h3><p id="total-incidents">0</p></div>
+      <div class="card"><h3>Critical Threats</h3><p id="critical-threats">0</p></div>
+      <div class="card"><h3>Active Alerts</h3><p id="active-alerts">0</p></div>
+    </section>
 
-        <!-- Incident Cards -->
-        <section class="stats">
-            <div class="card"><h3>Total Incidents</h3><p id="total-incidents">0</p></div>
-            <div class="card"><h3>Critical Threats</h3><p id="critical-threats">0</p></div>
-            <div class="card"><h3>Active Alerts</h3><p id="active-alerts">0</p></div>
-        </section>
+    <section class="ml-form-section">
+      <h2>🧠 Predict Threat (ML)</h2>
+      <form id="predict-form">
+        <input type="number" name="src_port" placeholder="Source Port" required />
+        <input type="number" name="dst_port" placeholder="Destination Port" required />
+        <input type="number" name="packet_size" placeholder="Packet Size" required />
+        <input type="number" name="protocol" placeholder="Protocol" required />
+        <input type="text" name="src_ip" placeholder="Source IP (e.g., 192.168.1.1)" required />
+        <button type="submit">🚨 Predict Threat</button>
+      </form>
+      <p id="ml-prediction-result"></p>
+    </section>
 
-        <div class="log-section">
-            <h3>📜 Server Logs (Live)</h3>
-            <div id="logs-container" class="log-container"></div>
-        </div>
-        
+    <section class="log-section">
+      <h3>📜 Server Logs (Live)</h3>
+      <div id="logs-container" class="log-container"></div>
+    </section>
 
-        <!-- Live Threat Graphs -->
-        <section class="charts">
-            <canvas id="incidentChart"></canvas>
-        </section>
+    <section class="charts">
+      <h3>📊 Threat Analytics</h3>
+      <canvas id="incidentChart"></canvas>
+    </section>
 
-        <!-- Live Alerts -->
-        <section class="incident-table">
-            <h2>Live Incidents</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Type</th>
-                        <th>Severity</th>
-                        <th>Status</th>
-                        <th>Timestamp</th>
-                    </tr>
-                </thead>
-                <tbody id="incidentTable"></tbody>  <!-- ✅ Make Sure This ID Exists -->
-            </table>
-            
-        </section>
+    <section class="incident-table">
+      <h2>Live Incidents</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Type</th><th>Severity</th><th>Status</th><th>Timestamp</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="incidentTable"></tbody>
+      </table>
+    </section>
 
-        <section id="live-threat-map" class="content-section">
-            <header><h1>Live Cyber Attack Map</h1></header>
-            <div id="map"></div>
-        </section>
+    <section id="live-threat-map">
+      <h2>🌐 Live Cyber Attack Map</h2>
+      <div id="map"></div>
+    </section>
 
-        <!-- live Alerts? -->
+    <section id="live-alerts">
+      <h2>🔔 Live Security Alerts</h2>
+      <ul id="alerts-list"></ul>
+    </section>
 
-        <section id="live-alerts" class="content-section">
-            <header><h1>Live Security Alerts</h1></header>
-            <div class="alerts-container">
-                <ul id="alerts-list"></ul>
-            </div>
-        </section>
-        
-
-    </div>
-
-    <script src="script.js"></script>
+    <section class="download-section">
+      <button id="exportBtn">📥 Export Threat Report (CSV)</button>
+    </section>
+  </div>
 </body>
 </html>
-
-
