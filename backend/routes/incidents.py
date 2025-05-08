@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
-from database.models import Incident  # ✅ Correct Import
-from database import db
+from backend.database.models import Incident
+ # ✅ Correct Import
 
 # Blueprint for incidents
 incidents_bp = Blueprint("incidents", __name__, url_prefix="/api/incidents")

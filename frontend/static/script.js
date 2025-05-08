@@ -6,11 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
     setupPredictionForm();
     setupLiveSocket();
     loadMap();
-    setInterval(fetchIncidents, 5000);
-    setInterval(fetchLogs, 5000);
+
+    // Auto refresh logs and incidents
+    setInterval(fetchIncidents, 5000);  // Incident data refresh every 5 seconds
+    setInterval(fetchLogs, 5000);  // Log data refresh every 5 seconds
 });
 
-// Navigation
+// 🔹 Navigation Control
 function initNavigation() {
     const navItems = document.querySelectorAll(".nav-item");
     const sections = document.querySelectorAll(".content-section");
@@ -27,14 +29,14 @@ function initNavigation() {
     });
 }
 
-// Fetch and display incidents
+// 🔹 Incident Fetching
 function fetchIncidents() {
     fetch("http://127.0.0.1:5000/api/incidents")
         .then(res => res.json())
         .then(data => {
             const table = document.getElementById("incidentTable");
             if (!table) return;
-            table.innerHTML = "";
+            table.innerHTML = ""; // Clear the table before populating new data
             data.forEach(incident => {
                 table.innerHTML += `
                     <tr>
@@ -46,14 +48,25 @@ function fetchIncidents() {
                     </tr>`;
             });
 
-            document.getElementById("total-incidents").innerText = data.length;
-            document.getElementById("critical-threats").innerText = data.filter(i => i.severity === "Critical").length;
-            document.getElementById("active-alerts").innerText = data.filter(i => i.status === "Active").length;
+            // Update the statistics
+            updateIncidentStats(data);  // Automatically update stats when incidents are fetched
         })
         .catch(err => console.error("Error fetching incidents:", err));
 }
 
-// Fetch logs
+// 🔹 Update Incident Stats (Automatically updates the statistics in the section)
+function updateIncidentStats(data) {
+    const totalIncidents = data.length;
+    const criticalThreats = data.filter(i => i.severity === "Critical").length;
+    const activeAlerts = data.filter(i => i.status === "Active").length;
+
+    // Update stats in the HTML (for real-time updates)
+    document.getElementById("total-incidents").innerText = totalIncidents;
+    document.getElementById("critical-threats").innerText = criticalThreats;
+    document.getElementById("active-alerts").innerText = activeAlerts;
+}
+
+// 🔹 Log Fetching (Latest on Top)
 function fetchLogs() {
     fetch("http://127.0.0.1:5000/api/logs")
         .then(res => res.json())
@@ -61,7 +74,8 @@ function fetchLogs() {
             const container = document.getElementById("logs-container");
             if (!container) return;
             container.innerHTML = "";
-            data.logs.forEach(log => {
+
+            data.logs.reverse().forEach(log => {
                 const p = document.createElement("p");
                 p.textContent = log;
                 container.appendChild(p);
@@ -70,17 +84,20 @@ function fetchLogs() {
         .catch(err => console.error("Error fetching logs:", err));
 }
 
-// Submit ML Prediction
+// 🔹 ML Prediction Form Submission
 function setupPredictionForm() {
     const form = document.getElementById("predict-form");
     if (!form) return;
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();
-
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        for (let key in data) data[key] = isNaN(data[key]) ? data[key] : Number(data[key]);
+
+        // Convert values
+        for (let key in data) {
+            if (!isNaN(data[key])) data[key] = Number(data[key]);
+        }
 
         fetch("http://127.0.0.1:5000/api/predict-log", {
             method: "POST",
@@ -98,7 +115,7 @@ function setupPredictionForm() {
     });
 }
 
-// Load donut chart
+// 🔹 Donut Graph Loader
 function loadGraph() {
     const ctx = document.getElementById("incidentChart").getContext("2d");
     new Chart(ctx, {
@@ -106,7 +123,7 @@ function loadGraph() {
         data: {
             labels: ['Low', 'Medium', 'High', 'Critical'],
             datasets: [{
-                data: [5, 10, 7, 3],
+                data: [5, 10, 7, 3],  // Sample data for demonstration
                 backgroundColor: ["#4caf50", "#ff9800", "#f44336", "#9c27b0"],
                 hoverOffset: 6
             }]
@@ -120,21 +137,25 @@ function loadGraph() {
     });
 }
 
-// Setup Live Alerts using Socket.IO
+// 🔹 Socket.IO for Live Alerts
 function setupLiveSocket() {
-    const socket = io("http://127.0.0.1:5000");
-    socket.on("new_alert", function (alert) {
-        const alertsList = document.getElementById("alerts-list");
-        if (!alertsList) return;
+    if (typeof io === 'undefined') {
+        console.error("⚠️ Socket.IO not loaded. Make sure it's included via CDN.");
+        return;
+    }
 
+    const socket = io("http://127.0.0.1:5000");
+    const alertsList = document.getElementById("alerts-list");
+
+    socket.on("new_alert", function (alert) {
         const item = document.createElement("li");
-        item.innerHTML = `<strong>${alert.type}</strong> - <b>${alert.severity}</b> <br> IP: ${alert.source_ip} <br> ${alert.timestamp}`;
+        item.innerHTML = `<strong>${alert.type}</strong> - <b>${alert.severity}</b><br>IP: ${alert.source_ip}<br>${alert.timestamp}`;
         item.className = `alert-item ${alert.severity.toLowerCase()}`;
         alertsList.prepend(item);
     });
 }
 
-// Load map and live threat markers
+// 🔹 Load Cyber Attack Map
 function loadMap() {
     const map = L.map('map').setView([20, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -146,8 +167,9 @@ function loadMap() {
             .then(res => res.json())
             .then(data => {
                 data.forEach(attack => {
-                    L.marker([attack.latitude, attack.longitude]).addTo(map)
-                        .bindPopup(`<b>${attack.type}</b><br>Source: ${attack.source_ip}<br>Target: ${attack.target_ip}`);
+                    L.marker([attack.latitude, attack.longitude])
+                        .addTo(map)
+                        .bindPopup(`<b>${attack.type}</b><br>From: ${attack.source_ip}<br>To: ${attack.target_ip}`);
                 });
             });
     }

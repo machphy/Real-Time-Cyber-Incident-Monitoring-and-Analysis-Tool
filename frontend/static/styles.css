@@ -1,176 +1,257 @@
-/* static/styles.css */
-
+/* Global Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f4f6fa;
-    color: #333;
-  }
-  
-  .sidebar {
-    position: fixed;
-    width: 220px;
-    height: 100vh;
-    background-color: #1f2937;
-    padding-top: 20px;
-    color: #fff;
-  }
-  
-  .sidebar h2 {
-    text-align: center;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    color: #10b981;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    padding: 15px 20px;
-  }
-  
-  .sidebar ul li.active,
-  .sidebar ul li:hover {
-    background-color: #374151;
-  }
-  
-  .sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  
-  .main-content {
-    margin-left: 220px;
-    padding: 30px;
-  }
-  
-  header h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-  }
-  
-  .stats {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
-  }
-  
-  .card {
-    background: white;
-    padding: 20px;
-    flex: 1;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border-left: 5px solid #10b981;
-    border-radius: 10px;
-  }
-  
-  .card h3 {
-    margin-top: 0;
-  }
-  
-  .log-section {
-    background: white;
-    padding: 20px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  
-  .charts, .incident-table, .content-section {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  
-  .incident-table table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .incident-table th, .incident-table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .incident-table th {
-    background-color: #f3f4f6;
-  }
-  
-  #incidentChart {
-    height: 300px !important;
-  }
-  
-  .ml-form-section {
-    background: white;
-    padding: 20px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  
-  .ml-form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-  }
-  
-  .ml-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .ml-form button {
-    padding: 10px;
-    background: #10b981;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .ml-form button:hover {
-    background: #059669;
-  }
-  
-  #map {
-    height: 400px;
-    width: 100%;
-    margin-top: 20px;
-  }
-  
-  .live-alert {
-    background-color: #fef3c7;
-    padding: 10px;
-    margin: 5px 0;
-    border-left: 4px solid #f59e0b;
-    border-radius: 5px;
-    font-size: 0.9rem;
-  }
-  
-  .alert-item.critical {
-    border-left-color: #dc2626;
-  }
-  
-  .alert-item.high {
-    border-left-color: #f97316;
-  }
-  
-  .alert-item.medium {
-    border-left-color: #eab308;
-  }
-  
-  .alert-item.low {
-    border-left-color: #10b981;
-  }
-  
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6fa;
+  color: #333;
+  display: flex;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background-color: #8b9aac52;
+  padding: 20px;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 30px;
+  color: #10b981;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 12px 18px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.sidebar ul li.active a,
+.sidebar ul li a:hover {
+  background-color: #374151;
+}
+
+/* Main Content Area */
+.main-content {
+  margin-left: 260px;
+  padding: 30px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* Header */
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Stats Cards */
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  flex: 1;
+  min-width: 180px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 5px solid #10b981;
+  border-radius: 10px;
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+}
+
+/* ML Prediction Section */
+.ml-form-section {
+  background: white;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.ml-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.ml-form input,
+.ml-form button {
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.ml-form input {
+  border: 1px solid #ccc;
+}
+
+.ml-form button {
+  background: #10b981;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.ml-form button:hover {
+  background: #059669;
+}
+
+#ml-prediction-result {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+/* Logs Section */
+.log-section {
+  background: rgb(212, 207, 207);
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-height: 280px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+/* Chart Section */
+.charts {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#incidentChart {
+  height: 300px !important;
+}
+
+/* Table Section */
+.incident-table {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+.incident-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.incident-table th,
+.incident-table td {
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  text-align: center;
+  font-size: 14px;
+}
+
+.incident-table th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+/* Map Section */
+#map {
+  height: 400px;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Live Alerts Section */
+#live-alerts {
+  background: white;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#alerts-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.alert-item {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: #fef3c7;
+  border-left: 5px solid #f59e0b;
+}
+
+.alert-item.critical {
+  border-left-color: #dc2626;
+}
+.alert-item.high {
+  border-left-color: #f97316;
+}
+.alert-item.medium {
+  border-left-color: #eab308;
+}
+.alert-item.low {
+  border-left-color: #10b981;
+}
+
+/* Download Button */
+.download-section {
+  text-align: right;
+  margin-bottom: 40px;
+}
+
+.download-section button {
+  padding: 10px 20px;
+  font-size: 15px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.download-section button:hover {
+  background: #1e40af;
+}

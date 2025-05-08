@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EDR Cybersecurity Dashboard</title>
-  <link rel="stylesheet" href="static/styles.css" />
+
+  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Socket.IO CDN -->
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" integrity="sha384-S+nNcQ7TP6MIyTrTTFeYXeXPOhT0NGJS9wK6fCjR+O0Ra8pOAo9T5DQ6DZyVDsPZ" crossorigin="anonymous"></script>
+
+  <!-- Custom CSS and JS -->
+  <link rel="stylesheet" href="static/styles.css" />
   <script defer src="static/script.js"></script>
 </head>
 <body>
+  <!-- Sidebar -->
   <nav class="sidebar">
     <h2>EDR</h2>
     <ul>
@@ -19,15 +27,21 @@
     </ul>
   </nav>
 
+  <!-- Main Content -->
   <div class="main-content">
-    <header><h1>Cyber Threat Dashboard</h1></header>
+    <header>
+      <h1>Cyber Threat Intelligence Dashboard</h1>
+    </header>
 
+    <!-- Real-Time Stats -->
     <section class="stats">
       <div class="card"><h3>Total Incidents</h3><p id="total-incidents">0</p></div>
       <div class="card"><h3>Critical Threats</h3><p id="critical-threats">0</p></div>
       <div class="card"><h3>Active Alerts</h3><p id="active-alerts">0</p></div>
-    </section>
+   </section>
+   
 
+    <!-- ML Prediction Form -->
     <section class="ml-form-section">
       <h2>🧠 Predict Threat (ML)</h2>
       <form id="predict-form">
@@ -38,41 +52,52 @@
         <input type="text" name="src_ip" placeholder="Source IP (e.g., 192.168.1.1)" required />
         <button type="submit">🚨 Predict Threat</button>
       </form>
-      <p id="ml-prediction-result"></p>
+      <p id="ml-prediction-result" class="ml-result"></p>
     </section>
 
+    <!-- Server Logs -->
     <section class="log-section">
-      <h3>📜 Server Logs (Live)</h3>
+      <h2>📜 Server Logs (Live)</h2>
       <div id="logs-container" class="log-container"></div>
     </section>
 
+    <!-- Donut Graph Section -->
     <section class="charts">
-      <h3>📊 Threat Analytics</h3>
+      <h2>📊 Threat Severity Overview</h2>
       <canvas id="incidentChart"></canvas>
     </section>
 
+    <!-- Incident Table -->
     <section class="incident-table">
       <h2>Live Incidents</h2>
       <table>
         <thead>
           <tr>
-            <th>ID</th><th>Type</th><th>Severity</th><th>Status</th><th>Timestamp</th><th>Action</th>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Severity</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody id="incidentTable"></tbody>
       </table>
     </section>
 
+    <!-- Attack Map -->
     <section id="live-threat-map">
-      <h2>🌐 Live Cyber Attack Map</h2>
+      <h2>🌍 Live Cyber Attack Map</h2>
       <div id="map"></div>
     </section>
 
+    <!-- Live Security Alerts -->
     <section id="live-alerts">
       <h2>🔔 Live Security Alerts</h2>
       <ul id="alerts-list"></ul>
     </section>
 
+    <!-- Download Report -->
     <section class="download-section">
       <button id="exportBtn">📥 Export Threat Report (CSV)</button>
     </section>
