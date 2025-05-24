@@ -1,0 +1,20 @@
+// Data Cleaning Pipeline
+digraph {
+	A [label="Raw Logs
+(JSON/XML/CSV)" fillcolor="#f9f9f9" shape=box style=filled]
+	B [label="Null Removal
+(Missing Value Imputation)" shape=box]
+	C [label="Encoding
+(Label/One-Hot)" shape=box]
+	D [label="Scaling
+(MinMax / Z-Score)" shape=box]
+	E [label="Outlier Removal
+(IQR / Z-Score)" shape=box]
+	F [label="Clean Structured
+DataFrame / CSV" fillcolor="#d1f0d1" shape=box style=filled]
+	A -> B
+	B -> C
+	C -> D
+	D -> E
+	E -> F
+}
