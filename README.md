@@ -190,6 +190,10 @@ docker-compose up --build
 
 ## License
 
-Content protected. Unauthorized use prohibited without explicit permission. Reach out for permissions before sharing or adapting this work . rajeevsharmamachphy@gmail.com 
+Content protected. Unauthorized use prohibited without explicit permission. Reach out for permissions before sharing or adapting this work .
+
+project owner
+rajeevsharmamachphy@gmail.com
+anchalverma31296@gmail.com
 
 ---
