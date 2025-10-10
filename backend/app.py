@@ -6,7 +6,8 @@ import os
 from flask import Flask, send_from_directory, jsonify, render_template, request
 from flask_cors import CORS
 from flask_socketio import SocketIO
-from backend.database import db  # ✅ Correct Import
+from flask_sqlalchemy import SQLAlchemy
+from backend.database.models import db
 from backend.routes.incidents import incidents_bp  # ✅ Correct Import
 from ml.predict import predict_threat  # ✅ New ML Import
 
@@ -84,16 +85,17 @@ def predict_log():
 
     alert = {
         "type": predicted_type,
-        "severity": "High",  # Optional: You can predict this too
+        "severity": "High",  # You can predict this too
         "source_ip": data.get("src_ip", "0.0.0.0"),
         "timestamp": time.strftime('%Y-%m-%d %H:%M:%S')
     }
 
     socketio.emit("new_alert", alert)
+    
     logging.info(f"📡 ML Alert: {alert}")
     return jsonify({"prediction": predicted_type}), 200
 
-# ✅ Fake Alerts (for Testing)
+# fake alert trigger
 def generate_fake_alert():
     alert_types = ["DDoS Attack", "Malware Detected", "Unauthorized Access", "Brute Force"]
     severities = ["Critical", "High", "Medium", "Low"]
