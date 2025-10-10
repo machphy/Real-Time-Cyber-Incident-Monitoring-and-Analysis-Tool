@@ -1,2 +1,51 @@
-secret_key: "dev_secret"
-database_uri: "sqlite:///dev.db"
+# ============================================
+# Development Environment Configuration
+# ============================================
+# This file contains NON-SENSITIVE configuration for development environment
+# For sensitive credentials (passwords, API keys), use .env file instead
+# ============================================
+
+# Application Settings
+app:
+  name: "Cyber Incident Monitoring System"
+  environment: "development"
+  debug: true
+  host: "127.0.0.1"
+  port: 5000
+
+# Database Settings (use environment variables from .env for credentials)
+# For development, you can use SQLite for quick setup
+database:
+  type: "sqlite"
+  uri: "sqlite:///dev.db"
+  # For PostgreSQL in development, reference .env variables:
+  # uri: "${DATABASE_URI}"
+  pool_size: 5
+  echo: true  # Log SQL queries in development
+
+# Security (use environment variables for actual secrets)
+security:
+  secret_key: "${SECRET_KEY}"  # Should come from .env
+  session_timeout: 3600
+  cors_enabled: true
+
+# Logging
+logging:
+  level: "DEBUG"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "backend/logs/server.log"
+
+# Machine Learning
+ml:
+  model_path: "ml/models/threat_classifier.pkl"
+  prediction_threshold: 0.7
+
+# Data Pipeline
+data_pipeline:
+  enabled: true
+  refresh_interval: 300  # seconds
+  
+# External APIs (keys should be in .env)
+apis:
+  twitter_enabled: false  # Set to true if you have Twitter API credentials
+  news_enabled: true

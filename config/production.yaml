@@ -1,2 +1,62 @@
-secret_key: "prod_secret"
-database_uri: "postgresql://user:pass@prod-db-host/dbname"
+# ============================================
+# Production Environment Configuration
+# ============================================
+# This file contains NON-SENSITIVE configuration for production environment
+# For sensitive credentials (passwords, API keys), use .env file instead
+# IMPORTANT: Never commit sensitive data to this file!
+# ============================================
+
+# Application Settings
+app:
+  name: "Cyber Incident Monitoring System"
+  environment: "production"
+  debug: false
+  host: "0.0.0.0"
+  port: 5000
+
+# Database Settings (MUST use environment variables from .env for credentials)
+database:
+  type: "postgresql"
+  uri: "${DATABASE_URI}"  # Must be set in .env file
+  pool_size: 20
+  echo: false  # Don't log SQL queries in production
+  pool_recycle: 3600
+  pool_pre_ping: true
+
+# Security (MUST use environment variables for actual secrets)
+security:
+  secret_key: "${SECRET_KEY}"  # Must be set in .env file
+  session_timeout: 1800
+  cors_enabled: false  # Configure CORS carefully in production
+  secure_cookies: true
+  
+# Logging
+logging:
+  level: "WARNING"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "/var/log/cyber_incident_monitoring/server.log"
+  rotation: "daily"
+  retention_days: 30
+
+# Machine Learning
+ml:
+  model_path: "/app/ml/models/threat_classifier.pkl"
+  prediction_threshold: 0.8
+
+# Data Pipeline
+data_pipeline:
+  enabled: true
+  refresh_interval: 600  # seconds
+  max_workers: 4
+
+# External APIs (keys MUST be in .env)
+apis:
+  twitter_enabled: true
+  news_enabled: true
+  rate_limit_per_hour: 1000
+
+# Performance
+performance:
+  cache_enabled: true
+  cache_ttl: 300
+  compression_enabled: true

@@ -92,7 +92,18 @@ The project follows a microservices-based architecture, with each major componen
    ```
 
 4. **Configure Environment Variables**:
-   - Copy `.env.example` to `.env` and set up necessary environment variables for database connections, API keys, etc.
+   
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+   ```
+   
+   Then edit `.env` and configure:
+   - Database credentials (username, password, host)
+   - Secret keys
+   - API keys (Twitter, News API, etc.)
+   
+   **Important**: The `.env` file stores **sensitive credentials** and should never be committed to version control.
 
 5. **Run Backend**:
 
@@ -113,6 +124,69 @@ The project follows a microservices-based architecture, with each major componen
 
 8. **Run Data Pipeline**:
    - Start the data ingestion and processing pipeline using Airflow or Celery, as configured in the `data_pipeline/` folder.
+
+---
+
+## Configuration Guide
+
+### Understanding `.env` vs `config/*.yaml`
+
+The project uses two types of configuration files that work together:
+
+#### `.env` File (Sensitive Credentials)
+- **Purpose**: Stores **sensitive information** like passwords, API keys, and secrets
+- **Location**: Root directory (`.env`)
+- **Version Control**: **Never committed** to Git (listed in `.gitignore`)
+- **Usage**: Required for local development and deployment
+- **Example**: `.env.example` provides a template
+
+**Contains**:
+- Database credentials (username, password)
+- API keys (Twitter, News API, etc.)
+- Secret keys for encryption
+- Service tokens
+
+#### `config/*.yaml` Files (Non-Sensitive Settings)
+- **Purpose**: Stores **non-sensitive** application settings per environment
+- **Location**: `config/development.yaml` and `config/production.yaml`
+- **Version Control**: **Safe to commit** (no secrets)
+- **Usage**: Optional for basic local development, useful for advanced deployment
+
+**Contains**:
+- Application settings (debug mode, host, port)
+- Logging configuration
+- Feature flags
+- Performance tuning parameters
+- References to environment variables (e.g., `${DATABASE_URI}`)
+
+### Quick Start for Local Development
+
+For basic local development, you only need to:
+
+1. Copy `.env.example` to `.env`
+2. Fill in your database credentials and API keys in `.env`
+3. Run the application
+
+The `config/*.yaml` files are **optional** for local development. They become important when:
+- Deploying to multiple environments (dev, staging, production)
+- Using Docker or Kubernetes
+- Need environment-specific configurations
+- Working in a team with different setups
+
+### Environment-Specific Configuration
+
+**Development** (`config/development.yaml`):
+- Debug mode enabled
+- Verbose logging
+- SQLite or local PostgreSQL
+- CORS enabled for local frontend
+
+**Production** (`config/production.yaml`):
+- Debug mode disabled
+- Minimal logging
+- Production database with connection pooling
+- Security hardening
+- Performance optimizations
 
 ---
 
