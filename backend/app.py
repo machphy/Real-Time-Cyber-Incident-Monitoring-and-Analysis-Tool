@@ -3,74 +3,94 @@ import threading
 import time
 import random
 import os
-from flask import Flask, send_from_directory, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
-from flask_socketio import SocketIO
-from flask_sqlalchemy import SQLAlchemy
-from backend.database.models import db
-from backend.routes.incidents import incidents_bp  # ✅ Correct Import
-from ml.predict import predict_threat  # ✅ New ML Import
 
-# ✅ Initialize Flask App
+# ===============================
+# INTERNAL IMPORTS
+# ===============================
+from backend.database.models import db
+from backend.routes.incidents import incidents_bp, add_incident
+from ml.predict import predict_threat
+
+# ===============================
+# FLASK APP INIT
+# ===============================
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
 app = Flask(
     __name__,
-    static_folder=os.path.abspath("frontend/static"),
-    template_folder=os.path.abspath("frontend")
+    static_folder=os.path.join(BASE_DIR, "frontend/static"),
+    template_folder=os.path.join(BASE_DIR, "frontend")
 )
-CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
 
-# ✅ Database Configuration
+CORS(app)
+
+# ===============================
+# DATABASE CONFIG
+# ===============================
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://cyber_admin:123456789@localhost/cybersecurity"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# ✅ Initialize Database
 db.init_app(app)
 with app.app_context():
     db.create_all()
 
-# ✅ Register Routes
+# ===============================
+# LOGGING CONFIG
+# ===============================
+LOG_FILE = os.path.join(BASE_DIR, "backend/logs/server.log")
+os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+# ===============================
+# REGISTER ROUTES
+# ===============================
 app.register_blueprint(incidents_bp)
 
-# ✅ Redirect /index.html to /
-@app.route("/index.html")
-def redirect_to_home():
-    return serve_dashboard()
-
-# ✅ Serve Dashboard
+# ===============================
+# DASHBOARD ROUTES
+# ===============================
 @app.route("/")
 def serve_dashboard():
     return render_template("index.html")
 
-# ✅ Serve Additional Pages (Threat Logs, Reports, Settings)
+@app.route("/index.html")
+def redirect_index():
+    return serve_dashboard()
+
 @app.route("/pages/<page>")
 def serve_pages(page):
-    allowed_pages = ["threat_logs.html", "reports.html", "settings.html"]
-    if page in allowed_pages:
+    allowed = ["threat_logs.html", "reports.html", "settings.html"]
+    if page in allowed:
         return render_template(f"pages/{page}")
     return "Page Not Found", 404
 
-# ✅ Serve Static Files (CSS, JS)
 @app.route("/static/<path:filename>")
 def serve_static(filename):
     return send_from_directory(app.static_folder, filename)
 
-# ✅ Setup Logging
-LOG_FILE = "backend/logs/server.log"
-logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
-                    format="%(asctime)s - %(levelname)s - %(message)s")
-
-@app.route('/api/logs', methods=['GET'])
+# ===============================
+# API: SERVER LOGS (READ ONLY)
+# ===============================
+@app.route("/api/logs", methods=["GET"])
 def get_logs():
     try:
-        with open(LOG_FILE, "r") as log_file:
-            logs = log_file.readlines()[-20:]
+        with open(LOG_FILE, "r") as f:
+            logs = f.readlines()[-20:]
         return jsonify({"logs": logs})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# ✅ Predict Threat using ML Model
-@app.route('/api/predict-log', methods=['POST'])
+# ===============================
+# API: ML PREDICTION → INCIDENT
+# ===============================
+@app.route("/api/predict-log", methods=["POST"])
 def predict_log():
     data = request.get_json()
 
@@ -81,46 +101,48 @@ def predict_log():
         "protocol": data.get("protocol", 1)
     }
 
-    predicted_type = predict_threat(features)
+    threat_type = predict_threat(features)
 
-    alert = {
-        "type": predicted_type,
-        "severity": "High",  # You can predict this too
+    incident = {
+        "type": threat_type,
+        "severity": "High",
         "source_ip": data.get("src_ip", "0.0.0.0"),
-        "timestamp": time.strftime('%Y-%m-%d %H:%M:%S')
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
     }
 
-    socketio.emit("new_alert", alert)
-    
-    logging.info(f"📡 ML Alert: {alert}")
-    return jsonify({"prediction": predicted_type}), 200
+    add_incident(incident)
+    logging.info(f"📡 ML Incident: {incident}")
 
-# fake alert trigger
-def generate_fake_alert():
-    alert_types = ["DDoS Attack", "Malware Detected", "Unauthorized Access", "Brute Force"]
-    severities = ["Critical", "High", "Medium", "Low"]
+    return jsonify({"status": "incident_created", "incident": incident}), 200
+
+# ===============================
+# BACKGROUND ALERT GENERATOR (STAGE-1)
+# ===============================
+def generate_fake_incident():
     return {
-        "type": random.choice(alert_types),
-        "severity": random.choice(severities),
-        "source_ip": f"192.168.1.{random.randint(1, 255)}",
-        "timestamp": time.strftime('%Y-%m-%d %H:%M:%S')
+        "type": random.choice(
+            ["DDoS Attack", "Malware Detected", "Unauthorized Access", "Brute Force"]
+        ),
+        "severity": random.choice(["Critical", "High", "Medium", "Low"]),
+        "source_ip": f"192.168.1.{random.randint(1, 254)}",
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
     }
 
-def send_alerts():
+def incident_generator():
     while True:
-        alert = generate_fake_alert()
-        socketio.emit("new_alert", alert)
-        logging.info(f"🔔 New Alert: {alert}")
+        incident = generate_fake_incident()
+        add_incident(incident)
+        logging.info(f"🔔 New Incident: {incident}")
         time.sleep(5)
 
-@app.route('/api/alerts')
-def get_alerts():
-    return jsonify([generate_fake_alert() for _ in range(5)])
+# ===============================
+# START BACKGROUND THREAD
+# ===============================
+threading.Thread(target=incident_generator, daemon=True).start()
 
-# ✅ Start Background Alert Thread
-threading.Thread(target=send_alerts, daemon=True).start()
-
-# ✅ Run Flask with SocketIO
+# ===============================
+# MAIN ENTRY POINT
+# ===============================
 if __name__ == "__main__":
-    print("🚀 Starting Flask Server...")
-    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
+    print("🚀 RCIMAT Backend Starting (Stage-1)...")
+    app.run(host="127.0.0.1", port=5000, debug=True)
